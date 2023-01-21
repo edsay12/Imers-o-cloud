@@ -17,7 +17,7 @@ export function Home() {
           </p>
         </section>
         <section className="selecType">
-          <form>
+          <form >
             <div className="options">
               <div
                 className={`option ${!SelectedButton ? "selected" : ""}`}

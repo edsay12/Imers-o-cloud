@@ -3,6 +3,7 @@ import { useState } from "react";
 
 
 import { Route, Router, Routes } from "react-router-dom";
+import { DeskBoard } from "./pages/deskboard/deskboard";
 import { Home } from "./pages/home";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home/>} />
+      <Route path="/desk" element={<DeskBoard/>} />
     </Routes>
   );
 }
