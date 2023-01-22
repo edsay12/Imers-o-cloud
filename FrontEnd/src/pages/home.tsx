@@ -31,14 +31,14 @@ export function Home() {
         <section className="options">
           <div
             className={`${!isSelected ? "option selected" : "option "}`}
-            onClick={() => setIsSelected(!isSelected)}
+            onClick={() => setIsSelected(false)}
           >
             <SiAmazons3 />
             <p>BucketS3</p>
           </div>
           <div
             className={`${isSelected ? "option selected" : "option"}`}
-            onClick={() => setIsSelected(!isSelected)}
+            onClick={() => setIsSelected(true)}
           >
             <SiAmazons3 />
             <p>S3Glacier</p>
