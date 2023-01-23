@@ -9,7 +9,7 @@ var upload = multer({
     },
     filename: (req, file, cb) => {
       const hash = crypto.randomBytes(10).toString("hex");
-      const imageNewName = `${file.originalname}-${Date.now().toString()}-${hash}`;
+      const imageNewName = `${hash}-${file.originalname}`;
       cb(null, imageNewName);
     },
   }),
