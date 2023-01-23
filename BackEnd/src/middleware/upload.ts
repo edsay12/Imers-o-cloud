@@ -1,5 +1,6 @@
 import multer from "multer";
 import path from "path";
+import crypto from "crypto";
 
 var upload = multer({
   storage: multer.diskStorage({
@@ -7,7 +8,8 @@ var upload = multer({
       cb(null, "./public/upload");
     },
     filename: (req, file, cb) => {
-      const imageNewName = `${Date.now().toString()}${file.originalname}`;
+      const hash = crypto.randomBytes(10).toString("hex");
+      const imageNewName = `${file.originalname}-${Date.now().toString()}-${hash}`;
       cb(null, imageNewName);
     },
   }),
