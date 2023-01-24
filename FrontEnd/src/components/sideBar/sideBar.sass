@@ -5,6 +5,7 @@
     background-color: #b7a5dfaf
 .sideBar
     transition: all 1s
+    
     background-color: #6941C7
     padding: 50px 20px
     width:280px
@@ -25,7 +26,7 @@
         cursor: pointer
     .text 
         color: white
-        display: none
+        font-size:13px
         
 .seach
     background-color: #7E56DA
@@ -88,6 +89,7 @@
         
 .sideButton
     position: absolute
+    transform: rotate(180deg)
     top: 20px
     right:-50px
     display: flex
@@ -107,12 +109,14 @@
     transition: all 1s
 
     .sideButton
-        transform: rotate(180deg)
+        transform: rotate(0deg)
         transition: all 1s
         
     
     .sideBarUser
         justify-content: center
+        .text
+            display: none
         
     .arrowIco
         display: none

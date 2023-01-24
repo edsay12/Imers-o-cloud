@@ -1,5 +1,5 @@
 import { Children, ReactNode } from "react";
-import { SideBar } from "../../components/SideBar";
+import { SideBar } from "../../components/sideBar/SideBar";
 import './deskboard.sass'
 
 type Proptypes = {
