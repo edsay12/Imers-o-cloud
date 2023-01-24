@@ -11,16 +11,17 @@ const routes = Router();
 routes.post(
   "/",
   upload.single("image"),
-  async (req: Request, res: Response) => {
-    // const uploadArchives = new UploadArchives();
-    // await uploadArchives.execute();
-    // return response.send();
+    async (req: Request, res: Response) => {
+    const { file } = req;
+    const uploadArchives = new UploadArchives();
+    await uploadArchives.execute();
 
     return res.send(req.file);
   }
 );
 
-routes.delete("/", async (request, response) => {
+routes.delete(
+    "/", async (req: Request, res: Response) => {
   const deleteArchives = new DeleteArchives();
   await deleteArchives.execute();
 
