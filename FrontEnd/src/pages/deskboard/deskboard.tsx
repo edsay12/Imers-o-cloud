@@ -1,5 +1,15 @@
-export function DeskBoard() {
+import { Children, ReactNode } from "react";
+import { SideBar } from "../../components/SideBar";
+import './deskboard.sass'
+
+type Proptypes = {
+  children: ReactNode;
+};
+export function DeskBoard({ children }: Proptypes) {
   return (
-    <h1>Eu Sou uma sideBar</h1>
-  )
+    <main className="sideBarLayout">
+      <SideBar/>
+      <section className="sideBarMain">{children}</section>
+    </main>
+  );
 }

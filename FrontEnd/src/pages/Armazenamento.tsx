@@ -1,8 +1,8 @@
 import { SiAmazons3 } from "react-icons/si";
 import { BsBucket } from "react-icons/bs";
-import "./home.sass";
+import "./armazenamento.sass";
 import { useState } from "react";
-export function Home() {
+export function Armazenamento() {
   const [SelectedButton, setSelectedbutton] = useState(false);
   const [fileName, setFileName] = useState("Selecione o arquivo");
   const [isSelected, setIsSelected] = useState(false);
