@@ -14,7 +14,7 @@ routes.post(
     async (req: Request, res: Response) => {
     const { file } = req;
     const uploadArchives = new UploadArchives();
-    await uploadArchives.execute();
+    await uploadArchives.execute(req.file);
 
     return res.send(req.file);
   }
