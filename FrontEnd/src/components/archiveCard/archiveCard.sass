@@ -1,9 +1,5 @@
-img 
-    width: 60%
-
-
-
-.home
+.cardItem
+    position: relative
     .cards
         margin-top: 40px 
         width: 100%
@@ -63,5 +59,45 @@ img
                     font-size: 14px
                     
 
-                    
-
+.cardModal
+    display: none
+    position: absolute
+    top: 15px
+    right: 10px
+    background-color: white
+    z-index: 100000
+    border-radius: 10px
+    // overflow: hidden
+    -webkit-box-shadow: -5px 10px 211px -37px rgba(0,0,0,0.51)
+    -moz-box-shadow: -5px 10px 211px -37px rgba(0,0,0,0.51)
+    box-shadow: -5px 10px 211px -37px rgba(0,0,0,0.51)
+    .options
+        padding: 10px 0
+        overflow: hidden
+       
+        display: flex
+        flex-direction: column
+        
+        .option 
+            padding: 10px 20px
+            width: 100%
+            cursor: pointer
+            display: flex
+            gap: 10px
+            &:hover
+                background-color: #dfdfdf   
+.cardModal.selected
+    display: flex
+.closeIco
+    cursor: pointer
+    font-size: 20px
+    position: absolute
+    right: -10px
+    top: -10px
+    background: white
+    border-radius: 100%
+    display: flex
+    align-items: center
+    justify-content: center
+    color: #6941C7
+   

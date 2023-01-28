@@ -1,18 +1,18 @@
-import "./home.sass";
+import { ArchiveCard } from "../../components/archiveCard/archiveCard";
 import { PageContainer } from "../../components/pageContainer/PageContainer";
 import { PageTitle } from "../../components/pageTitle/pageTitle";
-import nothingHere from "../../assets/imgs/nothingHere.png";
-import { FaFolder } from "react-icons/fa";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { ArchiveCard } from "../../components/archiveCard/archiveCard";
+import './lixeira.sass'
 
-export function Home() {
-  return (
-    <>
-      <section className="home">
-        <PageContainer>
-          <PageTitle title="Meus arquivos"></PageTitle>
-          
+export function Lixeira(){
+    return (
+        <>
+        <section className="lixeira">
+          <PageContainer>
+            <PageTitle title="Itens excluidos"></PageTitle>
+            <section className="description">
+              <p>Itens excluidos ficarão aqui no prazo de ate 30 dias</p>
+            </section>
+  
             <div className="cards">
               <ArchiveCard
                 ArchiveTypes="file"
@@ -38,7 +38,7 @@ export function Home() {
                 date="06/09/2022,10:44 am"
                 fileSize="120.2 mb"
               />
-
+  
               <ArchiveCard
                 ArchiveTypes="txt"
                 cardTitle="Readme.txt"
@@ -46,9 +46,8 @@ export function Home() {
                 fileSize="120.2 mb"
               />
             </div>
-          
-        </PageContainer>
-      </section>
-    </>
-  );
+          </PageContainer>
+        </section>
+      </>
+    )
 }

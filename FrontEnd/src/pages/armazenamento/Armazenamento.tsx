@@ -1,68 +1,67 @@
-import { SiAmazons3 } from "react-icons/si";
-import { BsBucket } from "react-icons/bs";
-import "./armazenamento.sass";
-import { useState } from "react";
-export function Armazenamento() {
-  const [SelectedButton, setSelectedbutton] = useState(false);
-  const [fileName, setFileName] = useState("Selecione o arquivo");
-  const [isSelected, setIsSelected] = useState(false);
+import { PageContainer } from "../../components/pageContainer/PageContainer";
+import { PageTitle } from "../../components/pageTitle/pageTitle";
+import DonutChart from "react-donut-chart";
+import './armazenamento.sass'
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    console.log(e.target);
-  }
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.files) {
-      setFileName(e.target.files[0].name);
-    } else setFileName("Selecione o arquivo");
-  }
+export function Armazenamento() {
   return (
     <>
-      <main className="home">
-        <section className="title">
-          Cadastro de um novo item no banco de dados
-        </section>
-        <section className="description">
-          <p>
-            Escolha o arquivo no seu computador e certitifique-se que a opçao
-            correta esta selecionada
-          </p>
-        </section>
-        <section className="options">
-          <div
-            className={`${!isSelected ? "option selected" : "option "}`}
-            onClick={() => setIsSelected(false)}
-          >
-            <SiAmazons3 />
-            <p>BucketS3</p>
-          </div>
-          <div
-            className={`${isSelected ? "option selected" : "option"}`}
-            onClick={() => setIsSelected(true)}
-          >
-            <SiAmazons3 />
-            <p>S3Glacier</p>
-          </div>
-        </section>
-        <form action="post" onSubmit={(e) => handleSubmit(e)}>
-          <div className="fileInput">
-            <div className="text">{fileName}</div>
-            <label htmlFor="newItem">
-              <div className="labelButton">
-                <div className="button">Procurar</div>
-              </div>
-            </label>
-            <input
-              type="file"
-              id="newItem"
-              name="userItem"
-              onChange={(e) => handleChange(e)}
-              placeholder=""
-            />
-          </div>
-          <button>Enviar</button>
-        </form>
-      </main>
+      <PageContainer>
+      <PageTitle title="Armazenamento"></PageTitle>
+        <div className="grafico">
+          <DonutChart
+            onMouseEnter={(item) => item}
+            legend={true}
+            colorFunction={(colors, index) => colors[index % colors.length]}
+            selectedOffset={0}
+            colors={[
+              "#f44310",
+              "#e91e63",
+              "#9c27b0",
+              "#673ab7",
+              "#3f51b5",
+              "#2196f3",
+              "#03a9f4",
+              "#00bcd4",
+              "#009688",
+              "#4caf50",
+              "#8bc34a",
+              "#cddc39",
+              "#ffeb3b",
+              "#ffc107",
+              "#ff9800",
+              "#ff5722",
+              "#795548",
+              "#607d8b",
+            ]}
+            data={[
+                {
+                    label: "Livre",
+                    value: 100,
+                    isEmpty: true,
+                  },
+              {
+                label: "Fotos",
+                value: 25,
+              },
+              {
+                label: "Videos",
+                value: 25,
+              },
+              {
+                label: "Documentos",
+                value: 70,
+              },
+              {
+                label: "Musicas",
+                value: 25,
+              },
+              
+            ]}
+          />
+        </div>
+        ;
+      </PageContainer>
     </>
   );
 }

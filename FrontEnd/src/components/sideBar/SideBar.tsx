@@ -5,6 +5,9 @@ import { BsHouseDoor } from "react-icons/bs";
 import { FiHelpCircle, FiLogOut } from "react-icons/fi";
 import { IoIosArrowForward, IoMdSettings } from "react-icons/io";
 import { FaRegNewspaper } from "react-icons/fa";
+import { SlTrash } from "react-icons/sl";
+import { BsArchive } from "react-icons/bs";
+import {MdUploadFile} from 'react-icons/md'
 import { Link, NavLink } from "react-router-dom";
 export function SideBar() {
     const [isSideBarClosed,SetIsSideBarClosed] = useState(false)
@@ -40,14 +43,14 @@ export function SideBar() {
             <div className="ico">
               <BsHouseDoor />
             </div>
-            <div className="text">Home</div>
+            <div className="text">Meus arquivos</div>
           </div>
           <div className="arrowIco">
             <IoIosArrowForward />
           </div>
         </NavLink>
         <NavLink
-          to={"/cadastro"}
+          to={"/upload"}
           className="link"
           style={({ isActive }) => ({
             backgroundColor: isActive ? "#7e56dac9" : "",
@@ -55,9 +58,9 @@ export function SideBar() {
         >
           <div className="linkItens">
             <div className="ico">
-              <FaRegNewspaper />
+              <MdUploadFile />
             </div>
-            <div className="text">Cadastro</div>
+            <div className="text">Upload de arquivo</div>
           </div>
           <div className="arrowIco">
             <IoIosArrowForward />
@@ -81,7 +84,7 @@ export function SideBar() {
           </div>
         </NavLink>
         <NavLink
-          to={"/help"}
+          to={"/arquivado"}
           className="link"
           style={({ isActive }) => ({
             backgroundColor: isActive ? "#7e56dac9" : "",
@@ -89,9 +92,9 @@ export function SideBar() {
         >
           <div className="linkItens">
             <div className="ico">
-              <FiHelpCircle />
+              <BsArchive />
             </div>
-            <div className="text">Help</div>
+            <div className="text">Arquivados</div>
           </div>
           <div className="arrowIco">
             <IoIosArrowForward />
@@ -99,7 +102,7 @@ export function SideBar() {
         </NavLink>
         <div className="divider"></div>
         <NavLink
-          to={"/configuraçoes"}
+          to={"/lixeira"}
           className="link"
           style={({ isActive }) => ({
             backgroundColor: isActive ? "#7e56dac9" : "",
@@ -107,9 +110,9 @@ export function SideBar() {
         >
           <div className="linkItens">
             <div className="ico">
-              <IoMdSettings />
+              <SlTrash />
             </div>
-            <div className="text">Configurações</div>
+            <div className="text">Lixeira</div>
           </div>
           <div className="arrowIco">
             <IoIosArrowForward />
