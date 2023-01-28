@@ -10,7 +10,7 @@ class ControlerS3 {
 
   constructor() {
     this.client = new aws.S3({
-      region: 'us-east-1',
+      region: 'sa-east-1',
     });
   }
   async saveFile(filename: string): Promise<void>{

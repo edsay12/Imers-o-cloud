@@ -14,12 +14,12 @@ const routes = Router();
 routes.post(
   "/",
   upload.single("image"),
-  async (req: Request, res: Response) => {
-    const filename = req.file?.filename ? req.file?.filename : "";
-    ControleS3.saveFile(filename);
 
-    // const uploadArchives = new UploadArchives();
-    // await uploadArchives.execute();
+    async (req: Request, res: Response) => {
+    const { file } = req;
+    const uploadArchives = new UploadArchives();
+    await uploadArchives.execute(req.file);
+
 
     return res.send(req.file);
   }
