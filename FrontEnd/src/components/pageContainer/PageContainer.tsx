@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
+import CardModalContext from "../../context/cardModalContext";
 import "./pagecontainer.sass";
 
 type Proptypes = {
@@ -6,5 +7,6 @@ type Proptypes = {
 };
 
 export function PageContainer({ children }: Proptypes) {
+  
   return <section className="pageContainer">{children}</section>;
 }
