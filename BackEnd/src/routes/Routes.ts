@@ -1,9 +1,6 @@
-import controlerS3 from "../controller/ControleS3";
 import upload from "../middleware/upload";
-import DeleteArchives from "../middleware/DeleteArchives";
-import { Request, Response, response, Router } from "express";
-import multer from "multer";
-import AWS from "aws-sdk";
+
+import { Request, Response, Router } from "express";
 import ControleS3 from "../controller/ControleS3";
 ("express");
 
@@ -34,8 +31,24 @@ routes.get("/:bucketName/:fileName", async (req: Request, res: Response) => {
   ControleS3.getBucketItem(req, res);
 });
 
-routes.get("/url/:bucketName/:fileName", async (req: Request, res: Response) => {
-  ControleS3.getBucketItem(req, res);
+routes.get(
+  "/url/:bucketName/:fileName",
+  async (req: Request, res: Response) => {
+    ControleS3.getItemUrl(req, res);
+  }
+);
+
+routes.put("/:bucketName/:fileName", async (req: Request, res: Response) => {
+  ControleS3.updateStorageClassForItem(req, res);
 });
+
+routes.get("/restore/:bucketName/:fileName", async (req: Request, res: Response) => {
+  ControleS3.restoreItem(req, res);
+});
+
+routes.get("/trash/:bucketName/:fileName", async (req: Request, res: Response) => {
+  ControleS3.updateStorageClassForItemTrash(req, res);
+});
+
 
 export default routes;

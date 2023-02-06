@@ -133,9 +133,19 @@ class ControlerS3 {
       },
       function (err, data) {
         if (err) {
-          res.send({ type: "Error", message: err });
+          res.status(400).send({ type: "Error", message: err });
         } else {
-          res.send({ type: "success", iten: data });
+          res.setHeader(
+            "Content-disposition",
+            `attachment; filename= ${fileName}`
+          );
+
+          res.setHeader(
+            "Content-Type",
+            data.ContentType ? data.ContentType : ""
+          );
+          res.status(200).send({ type: "Success", body: data.Body });
+          res.end();
         }
       }
     );
@@ -143,14 +153,85 @@ class ControlerS3 {
 
   async getItemUrl(req: Request, res: Response) {
     const { fileName, bucketName } = req.params;
-    this.client.getSignedUrl(
-      "putObject",
-      { Bucket: "bucket", Key: "key" },
+
+    if (!bucketName) {
+      return res.status(400).json({
+        type: "Error",
+        message: "nome do bucker incorreto ou inexistente",
+      });
+    }
+    if (!fileName) {
+      return res.status(400).json({
+        type: "Error",
+        message: "nome do arquivo errado ou inexistente",
+      });
+    }
+
+    await this.client.getSignedUrl(
+      "getObject",
+      { Bucket: bucketName, Key: fileName },
       function (err, url) {
         if (err) {
           res.send({ type: "Error", message: err });
         } else {
           res.send({ type: "success", url });
+        }
+      }
+    );
+  }
+
+  updateStorageClassForItem(req: Request, res: Response) {
+    const { fileName, bucketName } = req.params;
+    this.client.copyObject(
+      {
+        Bucket: bucketName,
+        Key: fileName,
+        CopySource: `${bucketName}/${fileName}`,
+        StorageClass: "GLACIER",
+      },
+      function (err, url) {
+        if (err) {
+          res.send({ type: "Error", message: err });
+        } else {
+          res.send({ type: "success", url });
+        }
+      }
+    );
+  }
+  
+  updateStorageClassForItemTrash(req: Request, res: Response) {
+    const { fileName, bucketName } = req.params;
+    this.client.copyObject(
+      {
+        Bucket: bucketName,
+        Key: fileName,
+        CopySource: `${bucketName}/${fileName}`,
+        StorageClass: "GLACIER_IR",
+      },
+      function (err, url) {
+        if (err) {
+          res.send({ type: "Error", message: err });
+        } else {
+          res.send({ type: "success", url });
+        }
+      }
+    );
+  }
+
+  restoreItem(req: Request, res: Response) {
+    const { fileName, bucketName } = req.params;
+    this.client.restoreObject(
+      {
+        Bucket: bucketName,
+        Key: fileName,
+        RestoreRequest:{'Days': 1, 'GlacierJobParameters': {'Tier': 'Standard'}}
+      },
+      function (err, data) {
+        if (err) {
+          res.send({ type: "Error", message: err });
+        } else {
+          console.log('ueppa')
+          res.send({ type: "success",message:'Restauração em andamento' });
         }
       }
     );
