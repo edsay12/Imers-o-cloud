@@ -14,29 +14,28 @@ const routes = Router();
 routes.post(
   "/:bucketName",
   upload.single("arquivo"),
-
-  async (req: Request, res: Response) => {
-    const { bucketName } = req.params;
-    const filename = req.file?.filename ? req.file?.filename : "";
-    const data = ControleS3.saveFile(filename, bucketName);
-    res.send({
-      message: "Item adicionado com sucesso",
-    });
+  (req: Request, res: Response) => {
+    ControleS3.saveFile(req, res);
   }
 );
 
-routes.post("/bucket/:bucktName", (req: Request, res: Response) => {
-  const { bucktName } = req.params;
-  ControleS3.createBucket(bucktName, res);
+routes.post("/bucket/:bucketName", (req: Request, res: Response) => {
+  ControleS3.createBucket(req, res);
 });
 
 routes.delete("/:bucketName/:fileName", async (req: Request, res: Response) => {
-  const { bucketName, fileName } = req.params;
-  console.log(bucketName,fileName)
-  ControleS3.deleteFile(fileName,bucketName);
+  ControleS3.deleteFile(req, res);
+});
+routes.get("/:bucketName", async (req: Request, res: Response) => {
+  ControleS3.getBucketItens(req, res);
+});
 
-  return res.status(202).send('success')
+routes.get("/:bucketName/:fileName", async (req: Request, res: Response) => {
+  ControleS3.getBucketItem(req, res);
+});
+
+routes.get("/url/:bucketName/:fileName", async (req: Request, res: Response) => {
+  ControleS3.getBucketItem(req, res);
 });
 
 export default routes;
-
