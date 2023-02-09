@@ -14,7 +14,7 @@ class ControlerS3 {
       region: "us-east-1", // Lembrar de sempre mudar a região
     });
   }
-
+// Cria um bucket
   createBucket(req: Request, res: Response) {
     const { bucketName } = req.params;
     const bucket = `${bucketName}-${crypto.randomBytes(10).toString("hex")}`;
@@ -35,7 +35,7 @@ class ControlerS3 {
       }
     );
   }
-
+// Adiciona um Item ao bucket
   async saveFile(req: Request, res: Response): Promise<void> {
     const { bucketName } = req.params;
     const filename = req.file?.filename ? req.file?.filename : "";
@@ -75,7 +75,7 @@ class ControlerS3 {
     );
     await FileSystem.promises.unlink(originalPath);
   }
-
+// Deleta um OBjeto do bucket
   async deleteFile(req: Request, res: Response) {
     const { bucketName, fileName } = req.params;
 
@@ -108,6 +108,7 @@ class ControlerS3 {
       }
     );
   }
+// Mostrar todos os itens do Bucket
   async getBucketItens(req: Request, res: Response) {
     const { bucketName } = req.params;
     this.client.listObjects(
@@ -123,7 +124,7 @@ class ControlerS3 {
       }
     );
   }
-
+// Baixa o Item
   async getBucketItem(req: Request, res: Response) {
     const { fileName, bucketName } = req.params;
     this.client.getObject(
@@ -150,7 +151,7 @@ class ControlerS3 {
       }
     );
   }
-
+// Visualizar item 
   async getItemUrl(req: Request, res: Response) {
     const { fileName, bucketName } = req.params;
 
@@ -179,7 +180,7 @@ class ControlerS3 {
       }
     );
   }
-
+// Muda o tipo de armazenamento do arquivo de STANDART para GLACIER
   updateStorageClassForItem(req: Request, res: Response) {
     const { fileName, bucketName } = req.params;
     this.client.copyObject(
@@ -198,7 +199,7 @@ class ControlerS3 {
       }
     );
   }
-  
+// // Muda o tipo de armazenamento do arquivo de STANDART para GLACIER IR
   updateStorageClassForItemTrash(req: Request, res: Response) {
     const { fileName, bucketName } = req.params;
     this.client.copyObject(
@@ -217,7 +218,7 @@ class ControlerS3 {
       }
     );
   }
-
+// Faz a restauração do objeto que estava no aramazenado no GLACIER.
   restoreItem(req: Request, res: Response) {
     const { fileName, bucketName } = req.params;
     this.client.restoreObject(
