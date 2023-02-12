@@ -8,6 +8,8 @@ import { MdOutlineDriveFileMove } from "react-icons/md";
 import { useContext, useState } from "react";
 import CardModalContext from "../../context/cardModalContext";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import React from "react";
+import { useLocation } from "react-router-dom";
 
 type ArchiveTypes = "file" | "txt" | "jpeg" | "png" | "mp3" | "mp4";
 type PropType = {
@@ -33,25 +35,33 @@ export function ArchiveCard({
   fileSize,
 }: PropType) {
   const [isModalCarOpen, setIsModalOpen] = useState(false);
+  const location = useLocation()
 
+  
+
+ 
   const { isModalCardOpen, setIsCardModalOpen } = useContext(CardModalContext); // context
 
+
   function openCardModal() {
-    if(isModalCardOpen){
-      return
-    }else{
-      setIsCardModalOpen(true)
-      setIsModalOpen(true)
-      
-
+    if (isModalCardOpen) {
+      return;
+    } else {
+      setIsCardModalOpen(true);
+      setIsModalOpen(true);
     }
-    
   }
-  function closeModal(){
+  function closeModal() {
+    setIsCardModalOpen(false);
+    setIsModalOpen(false);
+  }
+  React.useEffect(() => {
+    // runs on location, i.e. route, change
     setIsCardModalOpen(false)
-    setIsModalOpen(false)
+  }, [location])
 
-  }
+
+
   return (
     <>
       <div className="cardItem">
@@ -82,36 +92,36 @@ export function ArchiveCard({
         </div>
         <div className={isModalCarOpen ? "cardModal selected" : "cardModal"}>
           <div className="modalCloser">
-            <div className="closeIco" onClick={()=> closeModal()}>
-              <IoMdCloseCircleOutline/>
+            <div className="closeIco" onClick={() => closeModal()}>
+              <IoMdCloseCircleOutline />
             </div>
           </div>
-          <div className="options" onClick={()=> closeModal()}>
+          <div className="options" onClick={() => closeModal()}>
             <div className="option">
-              <div className="optionIco" onClick={()=> closeModal()}>
+              <div className="optionIco" onClick={() => closeModal()}>
                 <AiOutlineDownload />
               </div>
               <div className="optiontext">Download</div>
             </div>
-            <div className="option" onClick={()=> closeModal()}>
-              <div className="optionIco" >
+            <div className="option" onClick={() => closeModal()}>
+              <div className="optionIco">
                 <BsArchive />
               </div>
               <div className="optiontext">Arquivar</div>
             </div>
-            <div className="option" onClick={()=> closeModal()}>
+            <div className="option" onClick={() => closeModal()}>
               <div className="optionIco">
                 <BsLink45Deg />
               </div>
               <div className="optiontext">Gerar Link</div>
             </div>
-            <div className="option" onClick={()=> closeModal()}>
+            <div className="option" onClick={() => closeModal()}>
               <div className="optionIco">
                 <MdOutlineDriveFileMove />
               </div>
               <div className="optiontext">Mover Para</div>
             </div>
-            <div className="option" onClick={()=> closeModal()}>
+            <div className="option" onClick={() => closeModal()}>
               <div className="optionIco">
                 <CiTrash />
               </div>
