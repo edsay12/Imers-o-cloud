@@ -2,23 +2,64 @@ import { SiAmazons3 } from "react-icons/si";
 import { BsBucket } from "react-icons/bs";
 import "./UploadArquivo.sass";
 import { useState } from "react";
-import  uploadImg  from "../../assets/imgs/uploadImg.png";
+import uploadImg from "../../assets/imgs/uploadImg.png";
+import Axios from "../../utils/AxiosConfig";
+import { Loading } from "../../components/loading/Loading";
 export function Upload() {
   const [SelectedButton, setSelectedbutton] = useState(false);
   const [fileName, setFileName] = useState("Selecione o arquivo");
   const [isSelected, setIsSelected] = useState(false);
+  const [item, setItem] = useState<any | void>("");
+  const [isloading,setIsloading] = useState(false)
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(e.target);
+    const formData = new FormData();
+    formData.append("arquivo", item);
+
+    console.log(formData);
+    if (!item) {
+      alert("Imagem não selecionada");
+      return;
+    }
+    try {
+      setIsloading(true)
+      const response = await Axios.post(
+        "/edvan7-2d6a6571fd7c373f8629/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(response);
+      setIsloading(false)
+      setItem("");
+      setFileName("Selecione o arquivo");
+      alert('item adicionado com sucesso')
+
+    } catch (error) {
+      setItem("");
+      setFileName("Selecione o arquivo");
+      setIsloading(false)
+      alert(error);
+      console.log(error)
+    }
   }
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
+      console.log(e.target.files[0].name);
       setFileName(e.target.files[0].name);
+      setItem(e.target.files[0]);
+      e.target.value = '';
     } else setFileName("Selecione o arquivo");
   }
+
   return (
     <>
+    <Loading isLoading={isloading}/>
       <main className="upload">
         <section className="title">
           Cadastro de um novo item no banco de dados
@@ -30,9 +71,9 @@ export function Upload() {
           </p>
         </section>
         <section className="options">
-          <img src={uploadImg} alt=""  />
+          <img src={uploadImg} alt="" />
         </section>
-        <form action="post"  onSubmit={(e) => handleSubmit(e)}>
+        <form action="post" onSubmit={(e) => handleSubmit(e)}>
           <div className="fileInput">
             <div className="text">{fileName}</div>
             <label htmlFor="newItem">

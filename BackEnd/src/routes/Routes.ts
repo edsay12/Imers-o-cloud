@@ -36,11 +36,13 @@ routes.get(
   async (req: Request, res: Response) => {
     ControleS3.getItemUrl(req, res);
   }
+  
 );
 
 routes.put("/:bucketName/:fileName", async (req: Request, res: Response) => {
   ControleS3.updateStorageClassForItem(req, res);
 });
+
 
 routes.get("/restore/:bucketName/:fileName", async (req: Request, res: Response) => {
   ControleS3.restoreItem(req, res);

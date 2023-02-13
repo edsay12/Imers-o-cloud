@@ -2,7 +2,7 @@ import { BsArchive, BsLink45Deg, BsThreeDotsVertical } from "react-icons/bs";
 import { FaFolder } from "react-icons/fa";
 import "./archiveCard.sass";
 import { FcFile, FcPicture, FcStart, FcHeadset } from "react-icons/fc";
-import { AiOutlineDownload } from "react-icons/ai";
+import { AiOutlineDownload, AiOutlineFilePdf } from "react-icons/ai";
 import { CiTrash } from "react-icons/ci";
 import { MdOutlineDriveFileMove } from "react-icons/md";
 import { useContext, useState } from "react";
@@ -10,6 +10,7 @@ import CardModalContext from "../../context/cardModalContext";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import React from "react";
 import { useLocation } from "react-router-dom";
+import Axios from "../../utils/AxiosConfig";
 
 type ArchiveTypes = "file" | "txt" | "jpeg" | "png" | "mp3" | "mp4";
 type PropType = {
@@ -17,12 +18,15 @@ type PropType = {
   ArchiveTypes: ArchiveTypes;
   date: string;
   fileSize: string;
+  itemKey: string;
 };
 const iconsArray = {
   file: <FaFolder />,
   txt: <FcFile />,
+  pdf: <AiOutlineFilePdf />,
   jpeg: <FcPicture />,
   png: <FcPicture />,
+  gif: <FcPicture />,
   mp3: <FcHeadset />,
   mp4: <FcStart />,
   default: <FcFile />,
@@ -33,15 +37,12 @@ export function ArchiveCard({
   cardTitle,
   date,
   fileSize,
+  itemKey,
 }: PropType) {
   const [isModalCarOpen, setIsModalOpen] = useState(false);
-  const location = useLocation()
+  const location = useLocation();
 
-  
-
- 
   const { isModalCardOpen, setIsCardModalOpen } = useContext(CardModalContext); // context
-
 
   function openCardModal() {
     if (isModalCardOpen) {
@@ -57,10 +58,17 @@ export function ArchiveCard({
   }
   React.useEffect(() => {
     // runs on location, i.e. route, change
-    setIsCardModalOpen(false)
-  }, [location])
+    setIsCardModalOpen(false);
+  }, [location]);
 
-
+  function dowload() {
+    Axios.get(
+      "http://localhost:8081/edvan7-2d6a6571fd7c373f8629/c913df2b46a38890223b-logo.png"
+    );
+  }
+  function GerarLink(){
+    // http://localhost:8081/url/edvan7-668e2d1c676773784b71/1ce176ee090c63e23591-logo.png
+  }
 
   return (
     <>
@@ -90,18 +98,25 @@ export function ArchiveCard({
             <div className="fileSize">{fileSize}</div>
           </div>
         </div>
+        {/* modal */}
         <div className={isModalCarOpen ? "cardModal selected" : "cardModal"}>
-          <div className="modalCloser">
-            <div className="closeIco" onClick={() => closeModal()}>
+          <div className="modalCloser" onClick={() => closeModal()}>
+            <div className="closeIco">
               <IoMdCloseCircleOutline />
             </div>
           </div>
-          <div className="options" onClick={() => closeModal()}>
-            <div className="option">
-              <div className="optionIco" onClick={() => closeModal()}>
+          <div className="options">
+            <div className="option" onClick={() => closeModal()}>
+              <div className="optionIco">
                 <AiOutlineDownload />
               </div>
-              <div className="optiontext">Download</div>
+              <div className="optiontext">
+                <a
+                  href={`http://localhost:8081/edvan7-2d6a6571fd7c373f8629/${itemKey}`}
+                >
+                  Download
+                </a>
+              </div>
             </div>
             <div className="option" onClick={() => closeModal()}>
               <div className="optionIco">
