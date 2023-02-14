@@ -21,8 +21,9 @@ routes.post("/bucket/:bucketName", (req: Request, res: Response) => {
 });
 
 routes.delete("/:bucketName/:fileName", async (req: Request, res: Response) => {
-  ControleS3.deleteFile(req, res);
+  ControleS3.updateStorageClassForItemTrash(req, res);
 });
+
 routes.get("/:bucketName", async (req: Request, res: Response) => {
   ControleS3.getBucketItens(req, res);
 });

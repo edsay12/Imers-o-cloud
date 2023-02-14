@@ -5,24 +5,29 @@ import nothingHere from "../../assets/imgs/nothingHere.png";
 import { FaFolder } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { ArchiveCard } from "../../components/archiveCard/archiveCard";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Axios from "../../utils/AxiosConfig";
 import { Loading } from "../../components/loading/Loading";
+import { apiGetItensContent, content } from "../../@types/apiGetItensContent";
+import { AxiosResponse } from "axios";
+import CardPageReload from "../../context/cardPageReload";
 export function Home() {
-  const [itens, setItens] = useState([]);
+  const [itens, setItens] = useState<content[]>([]);
   const [isloading,setIsloading] = useState(false)
+  const {isCardReload, setIsCardReload} = useContext(CardPageReload);
   useEffect(() => {
     setIsloading(true)
-    Axios.get("/edvan7-2d6a6571fd7c373f8629").then((data) => {
+    Axios.get("/edvan7-2d6a6571fd7c373f8629").then((data:AxiosResponse<apiGetItensContent, apiGetItensContent>) => {
       
-      const S3Items = data.data.itens.Contents;
-      const Data = S3Items.filter(
-        (data: any) => data.StorageClass === "STANDARD"
-      );
+      const S3Items = data.data.itens.Content;
+      const Data = S3Items.filter((data)=>{
+        return data.storageClass === 'STANDARD'
+      })
       setItens(Data);
+      console.log(Data)
       setIsloading(false)
     });
-  }, [""]);
+  }, [isCardReload]);
 
   return (
     <>
@@ -33,18 +38,14 @@ export function Home() {
 
           <div className="cards">
             {itens.map((data) => {
-              console.log(data)
-              const DataArquivo = new Date(data.LastModified).toDateString()
-            
-               
               return (
                 
                 <ArchiveCard
-                  itemKey={data.Key}
-                  ArchiveTypes={data.Key.split('.')[1]}
-                  cardTitle={`${data.Key.split('-')[1]}.${data.Key.split('.')[1]}`}
-                  date={`${DataArquivo}`}
-                  fileSize="120.2 mb"
+                  itemKey={data.key}
+                  ArchiveTypes={data.type}
+                  cardTitle={data.itemName}
+                  date={data.LastModified}
+                  fileSize={data.size}
                 />
               );
             })}

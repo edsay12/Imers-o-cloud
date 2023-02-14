@@ -1,4 +1,6 @@
+import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
+import { apiGetItensContent, content } from "../../@types/apiGetItensContent";
 import { ArchiveCard } from "../../components/archiveCard/archiveCard";
 import { Loading } from "../../components/loading/Loading";
 import { PageContainer } from "../../components/pageContainer/PageContainer";
@@ -7,17 +9,18 @@ import Axios from "../../utils/AxiosConfig";
 import "./arquivados.sass";
 
 export function Arquivados() {
-  const [itens, setItens] = useState([]);
+  const [itens, setItens] = useState<content[]>([]);
   const [isloading,setIsloading] = useState(false)
   useEffect(() => {
     setIsloading(true)
-    Axios.get("/edvan7-2d6a6571fd7c373f8629").then((data) => {
-      console.log(data)
-      const S3Items = data.data.itens.Contents;
-      const Data = S3Items.filter(
-        (data: any) => data.StorageClass === "GLACIER"
-      );
+    Axios.get("/edvan7-2d6a6571fd7c373f8629").then((data:AxiosResponse<apiGetItensContent, apiGetItensContent>) => {
+      
+      const S3Items = data.data.itens.Content;
+      const Data = S3Items.filter((data)=>{
+        return data.storageClass === 'GLACIER'
+      })
       setItens(Data);
+      console.log(Data)
       setIsloading(false)
     });
   }, [""]);
@@ -40,10 +43,11 @@ export function Arquivados() {
               return (
                 
                 <ArchiveCard
-                  ArchiveTypes={data.Key.split('.')[1]}
-                  cardTitle={`${data.Key.split('-')[1]}.${data.Key.split('.')[1]}`}
-                  date={`${DataArquivo}`}
-                  fileSize="120.2 mb"
+                  itemKey={data.key}
+                  ArchiveTypes={data.type}
+                  cardTitle={data.itemName}
+                  date={data.LastModified}
+                  fileSize={data.size}
                 />
               );
             })}

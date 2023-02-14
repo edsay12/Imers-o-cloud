@@ -11,8 +11,9 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import Axios from "../../utils/AxiosConfig";
+import CardPageReload from "../../context/cardPageReload";
 
-type ArchiveTypes = "file" | "txt" | "jpeg" | "png" | "mp3" | "mp4";
+type ArchiveTypes = "file" | "txt" | "jpeg" | "png" | "mp3" | "mp4" | string;
 type PropType = {
   cardTitle: string;
   ArchiveTypes: ArchiveTypes;
@@ -43,6 +44,7 @@ export function ArchiveCard({
   const location = useLocation();
 
   const { isModalCardOpen, setIsCardModalOpen } = useContext(CardModalContext); // context
+  const { isCardReload, setIsCardReload } = useContext(CardPageReload);
 
   function openCardModal() {
     if (isModalCardOpen) {
@@ -66,8 +68,29 @@ export function ArchiveCard({
       "http://localhost:8081/edvan7-2d6a6571fd7c373f8629/c913df2b46a38890223b-logo.png"
     );
   }
-  function GerarLink(){
-    // http://localhost:8081/url/edvan7-668e2d1c676773784b71/1ce176ee090c63e23591-logo.png
+  function GerarLink() {
+    Axios.get(
+      `http://localhost:8081/url/edvan7-2d6a6571fd7c373f8629/${itemKey}`
+    ).then((data) => {
+      navigator.clipboard.writeText(data.data.url);
+      alert("Link copiado com sucesso");
+    });
+  }
+  function arquivar() {
+    Axios.put(
+      `http://localhost:8081/edvan7-2d6a6571fd7c373f8629/${itemKey}`
+    ).then((data) => {
+      setIsCardReload(!isCardReload);
+      alert("Item arquivado com sucesso");
+    });
+  }
+  function deleteItem() {
+    Axios.delete(
+      `http://localhost:8081/edvan7-2d6a6571fd7c373f8629/${itemKey}`
+    ).then((data) => {
+      setIsCardReload(!isCardReload);
+      alert("Item deletado com sucesso");
+    });
   }
 
   return (
@@ -118,13 +141,25 @@ export function ArchiveCard({
                 </a>
               </div>
             </div>
-            <div className="option" onClick={() => closeModal()}>
+            <div
+              className="option"
+              onClick={() => {
+                closeModal();
+                arquivar();
+              }}
+            >
               <div className="optionIco">
                 <BsArchive />
               </div>
               <div className="optiontext">Arquivar</div>
             </div>
-            <div className="option" onClick={() => closeModal()}>
+            <div
+              className="option"
+              onClick={() => {
+                closeModal();
+                GerarLink();
+              }}
+            >
               <div className="optionIco">
                 <BsLink45Deg />
               </div>
@@ -136,7 +171,10 @@ export function ArchiveCard({
               </div>
               <div className="optiontext">Mover Para</div>
             </div>
-            <div className="option" onClick={() => closeModal()}>
+            <div className="option" onClick={() => {
+              closeModal()
+              deleteItem()
+              }}>
               <div className="optionIco">
                 <CiTrash />
               </div>
