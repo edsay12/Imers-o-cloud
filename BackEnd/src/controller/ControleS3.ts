@@ -136,7 +136,7 @@ class ControlerS3 {
       },
       function (err, data) {
         if (err) {
-          console.log(err)
+          console.log(err);
           return res.status(400).json({ type: "Error", message: err });
         } else {
           return res
@@ -203,16 +203,17 @@ class ControlerS3 {
         if (err) {
           res.status(400).send({ type: "Error", message: err });
         } else {
-          
-          res.setHeader('Content-Type', data.ContentType ? data.ContentType : "");
+          res.setHeader(
+            "Content-Type",
+            data.ContentType ? data.ContentType : ""
+          );
           res.setHeader(
             "Content-Disposition",
             `attachment;filename= ${fileName}`
           );
-          
-          
-          console.log(data.ContentType)
-          
+
+          console.log(data.ContentType);
+
           res.status(200).send(data.Body);
           res.end();
         }
@@ -279,7 +280,7 @@ class ControlerS3 {
       },
       function (err, url) {
         if (err) {
-          console.log(err)
+          console.log(err);
           res.send({ type: "Error", message: err }).status(500);
         } else {
           res.send({ type: "success", url });
@@ -302,6 +303,25 @@ class ControlerS3 {
         } else {
           console.log("ueppa");
           res.send({ type: "success", message: "Restauração em andamento" });
+        }
+      }
+    );
+  }
+  restoreTrashItem(req: Request, res: Response) {
+    const { fileName, bucketName } = req.params;
+    this.client.copyObject(
+      {
+        Bucket: bucketName,
+        Key: fileName,
+        CopySource: `${bucketName}/${fileName}`,
+        StorageClass: "STANDARD",
+      },
+      function (err, url) {
+        if (err) {
+          console.log(err);
+          res.send({ type: "Error", message: err }).status(500);
+        } else {
+          res.send({ type: "success", url });
         }
       }
     );

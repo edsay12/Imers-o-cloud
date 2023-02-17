@@ -20,9 +20,23 @@ routes.post("/bucket/:bucketName", (req: Request, res: Response) => {
   ControleS3.createBucket(req, res);
 });
 
-routes.delete("/:bucketName/:fileName", async (req: Request, res: Response) => {
-  ControleS3.updateStorageClassForItemTrash(req, res);
+routes.put(
+  "/updateForGlacierIR/:bucketName/:fileName",
+  async (req: Request, res: Response) => {
+    ControleS3.updateStorageClassForItemTrash(req, res);
+  }
+);
+
+routes.delete("/:bucketName/:fileName", (req, res) => {
+  ControleS3.deleteFile(req, res);
 });
+
+routes.put(
+  "/updateForGlacier/:bucketName/:fileName",
+  async (req: Request, res: Response) => {
+    ControleS3.updateStorageClassForItem(req, res);
+  }
+);
 
 routes.get("/:bucketName", async (req: Request, res: Response) => {
   ControleS3.getBucketItens(req, res);
@@ -37,21 +51,24 @@ routes.get(
   async (req: Request, res: Response) => {
     ControleS3.getItemUrl(req, res);
   }
-  
 );
 
-routes.put("/:bucketName/:fileName", async (req: Request, res: Response) => {
-  ControleS3.updateStorageClassForItem(req, res);
-});
+routes.get(
+  "/restore/:bucketName/:fileName",
+  async (req: Request, res: Response) => {
+    ControleS3.restoreItem(req, res);
+  }
+);
 
+routes.put('/trash/restore/:bucketName/:fileName',(req,res)=>{
+  ControleS3.restoreTrashItem(req,res)
+})
 
-routes.get("/restore/:bucketName/:fileName", async (req: Request, res: Response) => {
-  ControleS3.restoreItem(req, res);
-});
-
-routes.get("/trash/:bucketName/:fileName", async (req: Request, res: Response) => {
-  ControleS3.updateStorageClassForItemTrash(req, res);
-});
-
+routes.get(
+  "/trash/:bucketName/:fileName",
+  async (req: Request, res: Response) => {
+    ControleS3.updateStorageClassForItemTrash(req, res);
+  }
+);
 
 export default routes;

@@ -46,6 +46,7 @@ export function Home() {
                   cardTitle={data.itemName}
                   date={data.LastModified}
                   fileSize={data.size}
+                  cardType={data.storageClass}
                 />
               );
             })}

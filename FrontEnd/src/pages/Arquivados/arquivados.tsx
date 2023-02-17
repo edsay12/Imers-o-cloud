@@ -48,6 +48,7 @@ export function Arquivados() {
                   cardTitle={data.itemName}
                   date={data.LastModified}
                   fileSize={data.size}
+                  cardType={data.storageClass}
                 />
               );
             })}

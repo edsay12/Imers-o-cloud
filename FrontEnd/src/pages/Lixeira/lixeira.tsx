@@ -1,16 +1,18 @@
 import { AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { apiGetItensContent, content } from "../../@types/apiGetItensContent";
 import { ArchiveCard } from "../../components/archiveCard/archiveCard";
 import { Loading } from "../../components/loading/Loading";
 import { PageContainer } from "../../components/pageContainer/PageContainer";
 import { PageTitle } from "../../components/pageTitle/pageTitle";
+import CardPageReload from "../../context/cardPageReload";
 import Axios from "../../utils/AxiosConfig";
 import "./lixeira.sass";
 
 export function Lixeira() {
   const [itens, setItens] = useState<content[]>([]);
   const [isloading,setIsloading] = useState(false)
+  const {isCardReload, setIsCardReload} = useContext(CardPageReload);
   useEffect(() => {
     setIsloading(true)
     Axios.get("/edvan7-2d6a6571fd7c373f8629").then((data:AxiosResponse<apiGetItensContent, apiGetItensContent>) => {
@@ -23,7 +25,7 @@ export function Lixeira() {
       console.log(Data)
       setIsloading(false)
     });
-  }, [""]);
+  }, [isCardReload]);
   return (
     <>
     <Loading isLoading={isloading}/>
@@ -46,6 +48,7 @@ export function Lixeira() {
                   cardTitle={data.itemName}
                   date={data.LastModified}
                   fileSize={data.size}
+                  cardType={data.storageClass}
                 />
               );
             })}
