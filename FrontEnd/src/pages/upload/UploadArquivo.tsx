@@ -5,6 +5,7 @@ import { useState } from "react";
 import uploadImg from "../../assets/imgs/uploadImg.png";
 import Axios from "../../utils/AxiosConfig";
 import { Loading } from "../../components/loading/Loading";
+import { toast } from "react-toastify";
 export function Upload() {
   const [SelectedButton, setSelectedbutton] = useState(false);
   const [fileName, setFileName] = useState("Selecione o arquivo");
@@ -19,7 +20,7 @@ export function Upload() {
 
     console.log(formData);
     if (!item) {
-      alert("Imagem não selecionada");
+      toast.error("Imagem não selecionada");
       return;
     }
     try {
@@ -38,14 +39,14 @@ export function Upload() {
       setIsloading(false)
       setItem("");
       setFileName("Selecione o arquivo");
-      alert('item adicionado com sucesso')
+      toast.success('item adicionado com sucesso')
 
     } catch (error) {
       setItem("");
       setFileName("Selecione o arquivo");
       setIsloading(false)
-      alert(error);
-      console.log(error)
+      toast.success('Erro desconhecido')
+
     }
   }
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

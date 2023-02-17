@@ -12,6 +12,7 @@ import { Upload } from "./pages/upload/UploadArquivo";
 import { Armazenamento } from "./pages/armazenamento/armazenamento";
 import CardModalContext from "./context/cardModalContext";
 import CardPageReload from "./context/cardPageReload";
+import { ToastContainer } from "react-toastify";
 type ModalCard = {
   isModalCardOpen: any;
   setIsCardModalOpen: any;
@@ -23,36 +24,53 @@ function App() {
   const [isModalCardOpen, setIsCardModalOpen] = useState<any>(false);
 
   return (
-    <CardPageReload.Provider value={{isCardReload, setIsCardReload}}>
-      <CardModalContext.Provider
-        value={{ isModalCardOpen, setIsCardModalOpen }}
-      >
-        <Routes>
-          <Route path="/" element={<DeskBoard children={<Home />} />} />
-          <Route path="/upload" element={<DeskBoard children={<Upload />} />} />
-          <Route
-            path="/armazenamento"
-            element={<DeskBoard children={<Armazenamento />} />}
-          />
-          <Route
-            path="/arquivado"
-            element={<DeskBoard children={<Arquivados />} />}
-          />
-          <Route
-            path="/lixeira"
-            element={<DeskBoard children={<Lixeira />} />}
-          />
-          <Route
-            path="/configuraçoes"
-            element={<DeskBoard children={<h1>configuraçoes</h1>} />}
-          />
-          <Route
-            path="/help"
-            element={<DeskBoard children={<h1>help</h1>} />}
-          />
-        </Routes>
-      </CardModalContext.Provider>
-    </CardPageReload.Provider>
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <CardPageReload.Provider value={{ isCardReload, setIsCardReload }}>
+        <CardModalContext.Provider
+          value={{ isModalCardOpen, setIsCardModalOpen }}
+        >
+          <Routes>
+            <Route path="/" element={<DeskBoard children={<Home />} />} />
+            <Route
+              path="/upload"
+              element={<DeskBoard children={<Upload />} />}
+            />
+            <Route
+              path="/armazenamento"
+              element={<DeskBoard children={<Armazenamento />} />}
+            />
+            <Route
+              path="/arquivado"
+              element={<DeskBoard children={<Arquivados />} />}
+            />
+            <Route
+              path="/lixeira"
+              element={<DeskBoard children={<Lixeira />} />}
+            />
+            <Route
+              path="/configuraçoes"
+              element={<DeskBoard children={<h1>configuraçoes</h1>} />}
+            />
+            <Route
+              path="/help"
+              element={<DeskBoard children={<h1>help</h1>} />}
+            />
+          </Routes>
+        </CardModalContext.Provider>
+      </CardPageReload.Provider>
+    </>
   );
 }
 

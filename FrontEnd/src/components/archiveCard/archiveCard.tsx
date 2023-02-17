@@ -15,6 +15,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import Axios from "../../utils/AxiosConfig";
 import CardPageReload from "../../context/cardPageReload";
+import { toast } from "react-toastify";
 
 type ArchiveTypes = "file" | "txt" | "jpeg" | "png" | "mp3" | "mp4" | string;
 type PropType = {
@@ -73,10 +74,12 @@ export function ArchiveCard({
       `http://localhost:8081/restore/edvan7-2d6a6571fd7c373f8629/${itemKey}`
     )
       .then((data) => {
-        return alert("Processo de recuperação do arquivo iniciada com sucesso");
+        return toast.success(
+          "Processo de recuperação do arquivo iniciada com sucesso"
+        );
       })
       .catch(() => {
-        return alert(
+        return toast.error(
           "Processo de recuperação do arquivo nao pode ser iniciada"
         );
       });
@@ -87,10 +90,10 @@ export function ArchiveCard({
     )
       .then((data) => {
         navigator.clipboard.writeText(data.data.url);
-        return alert("Link copiado com sucesso");
+        return toast.success("Link copiado com sucesso");
       })
       .catch((e) => {
-        return alert("Erro ao copiar o link");
+        return toast.error("Erro ao copiar o link");
       });
   }
   async function arquivar() {
@@ -99,10 +102,10 @@ export function ArchiveCard({
     )
       .then((data) => {
         setIsCardReload(!isCardReload);
-        return alert("Item arquivado com sucesso");
+        return toast.success("Item arquivado com sucesso");
       })
       .catch(() => {
-        return alert("erro ao arquivar o arquivo");
+        return toast.error("erro ao arquivar o arquivo");
       });
   }
   async function Lixeira() {
@@ -111,10 +114,10 @@ export function ArchiveCard({
     )
       .then((data) => {
         setIsCardReload(!isCardReload);
-        return alert("O Item foi colocado na lixeira");
+        return toast.success("O Item foi colocado na lixeira");
       })
       .catch(() => {
-        return alert("Erro ao colocar o item na lixeira");
+        return toast.error("Erro ao colocar o item na lixeira");
       });
   }
   async function Remover() {
@@ -123,24 +126,23 @@ export function ArchiveCard({
     )
       .then((data) => {
         setIsCardReload(!isCardReload);
-        return alert("O Item foi deletado permanentemente");
+        return toast.success("O Item foi deletado permanentemente");
       })
       .catch(() => {
-        return alert("Erro ao remover o item");
+        return toast.error("Erro ao remover o item");
       });
   }
-  async function RecuperarDaLixeira(){
+  async function RecuperarDaLixeira() {
     await Axios.put(
       `http://localhost:8081/trash/restore/edvan7-2d6a6571fd7c373f8629/${itemKey}`
     )
       .then((data) => {
         setIsCardReload(!isCardReload);
-        return alert("Restauração bem sucedida");
+        return toast.success("Restauração bem sucedida");
       })
       .catch(() => {
-        return alert("Erro ao Restaurar o item");
+        return toast.error("Erro ao Restaurar o item");
       });
-    
   }
 
   return (
@@ -291,7 +293,7 @@ export function ArchiveCard({
                 className="option"
                 onClick={() => {
                   closeModal();
-                  RecuperarDaLixeira()
+                  RecuperarDaLixeira();
                 }}
               >
                 <div className="optionIco">
