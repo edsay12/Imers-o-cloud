@@ -203,17 +203,17 @@ class ControlerS3 {
         if (err) {
           res.status(400).send({ type: "Error", message: err });
         } else {
+          
+          res.setHeader('Content-Type', data.ContentType ? data.ContentType : "");
           res.setHeader(
             "Content-Disposition",
             `attachment;filename= ${fileName}`
           );
-
-          res.setHeader(
-            "Content-Type",
-            data.ContentType ? data.ContentType : ""
-          );
           
-          res.status(200).send({ type: "Success", body: data.Body });
+          
+          console.log(data.ContentType)
+          
+          res.status(200).send(data.Body);
           res.end();
         }
       }
