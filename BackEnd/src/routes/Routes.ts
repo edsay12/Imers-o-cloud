@@ -31,6 +31,9 @@ routes.delete("/:bucketName/:fileName", (req, res) => {
   ControleS3.deleteFile(req, res);
 });
 
+routes.get("/sizes/:bucketName", (req, res) => {
+  ControleS3.getStorageSize(req, res);
+});
 routes.put(
   "/updateForGlacier/:bucketName/:fileName",
   async (req: Request, res: Response) => {
@@ -60,9 +63,9 @@ routes.get(
   }
 );
 
-routes.put('/trash/restore/:bucketName/:fileName',(req,res)=>{
-  ControleS3.restoreTrashItem(req,res)
-})
+routes.put("/trash/restore/:bucketName/:fileName", (req, res) => {
+  ControleS3.restoreTrashItem(req, res);
+});
 
 routes.get(
   "/trash/:bucketName/:fileName",

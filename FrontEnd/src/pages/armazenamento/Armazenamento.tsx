@@ -1,66 +1,89 @@
 import { PageContainer } from "../../components/pageContainer/PageContainer";
 import { PageTitle } from "../../components/pageTitle/pageTitle";
 import DonutChart from "react-donut-chart";
-import './armazenamento.sass'
+import "./armazenamento.sass";
+import { useEffect, useState } from "react";
+import Axios from "../../utils/AxiosConfig";
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { convertBytes } from "../../utils/bytesToSize";
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+type sizesType = {
+  audio: number;
+  document: number;
+  image: number;
+  others: number;
+  total: number;
+  video: number;
+};
+
+type responseType = {
+  data: { sizes: sizesType };
+};
 
 export function Armazenamento() {
+  const [sizes, setSizes] = useState<sizesType>({});
+  useEffect(() => {
+    Axios.get("/sizes/edvan7-2d6a6571fd7c373f8629").then(
+      ({ data }: responseType) => {
+        const itensKeys = Object.keys(data.sizes);
+        setSizes(data.sizes);
+        console.log(data.sizes);
+      }
+    );
+  }, []);
+
+  const data = {
+    labels: ["Audio", "Documentos", "Imagens", "Video", "Outros"],
+    datasets: [
+      {
+        data: [
+          sizes.audio,
+          sizes.document,
+          sizes.image,
+          sizes.video,
+          sizes.others,
+        ],
+        backgroundColor: [
+          "#FFA07A",
+          "#FFD700",
+          "#FF69B4",
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+        ],
+        hoverBackgroundColor: [
+          "#FFA07A",
+          "#FFD700",
+          "#FF69B4",
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+        ],
+      },
+    ],
+  };
+
+  const options = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            const value = convertBytes(context.parsed);
+            return `${value}`;
+          },
+        },
+      },
+    },
+  };
   return (
     <>
       <PageContainer>
-      <PageTitle title="Armazenamento"></PageTitle>
+        <PageTitle title="Armazenamento"></PageTitle>
         <div className="grafico">
-          <DonutChart
-            onMouseEnter={(item) => item}
-            legend={true}
-            colorFunction={(colors, index) => colors[index % colors.length]}
-            selectedOffset={0}
-            colors={[
-              "#f44310",
-              "#e91e63",
-              "#9c27b0",
-              "#673ab7",
-              "#3f51b5",
-              "#2196f3",
-              "#03a9f4",
-              "#00bcd4",
-              "#009688",
-              "#4caf50",
-              "#8bc34a",
-              "#cddc39",
-              "#ffeb3b",
-              "#ffc107",
-              "#ff9800",
-              "#ff5722",
-              "#795548",
-              "#607d8b",
-            ]}
-            data={[
-                {
-                    label: "Livre",
-                    value: 100,
-                    isEmpty: true,
-                  },
-              {
-                label: "Fotos",
-                value: 25,
-              },
-              {
-                label: "Videos",
-                value: 25,
-              },
-              {
-                label: "Documentos",
-                value: 70,
-              },
-              {
-                label: "Musicas",
-                value: 25,
-              },
-              
-            ]}
-          />
+          <Doughnut data={data} options={options} />
         </div>
-        ;
       </PageContainer>
     </>
   );

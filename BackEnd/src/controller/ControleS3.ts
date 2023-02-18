@@ -5,6 +5,8 @@ import upload from "../middleware/upload";
 import path from "path";
 import FileSystem from "fs";
 import crypto from "crypto";
+import {convertBytes,bytesToKB} from "../utils/convertBytes";
+import itensTypes from "../utils/ItensTypes";
 
 type awsResponse = {
   type: string;
@@ -149,6 +151,12 @@ class ControlerS3 {
   // Mostrar todos os itens do Bucket
   async getBucketItens(req: Request, res: Response) {
     const { bucketName } = req.params;
+    if (!bucketName) {
+      return res.status(400).json({
+        type: "Error",
+        message: "nome do bucker incorreto ou inexistente",
+      });
+    }
     this.client.listObjects(
       {
         Bucket: bucketName,
@@ -160,16 +168,6 @@ class ControlerS3 {
           if (!data.Contents) return res.send({ type: "success", itens: data });
           var response: apiContent = { Content: [{}] };
           response.Content.pop();
-          function convertBytes(bytes: any) {
-            const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-            if (bytes === 0) return "0 Bytes";
-            const i = Math.floor(Math.log(bytes) / Math.log(1024));
-            return (
-              parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) +
-              " " +
-              sizes[i]
-            );
-          }
 
           for (var item of data.Contents) {
             let itemName = item.Key?.split("-")[1];
@@ -187,6 +185,63 @@ class ControlerS3 {
             });
           }
           res.send({ type: "success", itens: response });
+        }
+      }
+    );
+  }
+  // Retorna um objeto com o tamanho total de arquivos armazenado no bucket
+  // alem disso ele tambem retornara o tamanho total de cada tipo de arquivo armazenado
+  async getStorageSize(req: Request, res: Response) {
+    const { bucketName } = req.params;
+    if (!bucketName) {
+      return res.status(400).json({
+        type: "Error",
+        message: "nome do bucker incorreto ou inexistente",
+      });
+    }
+    this.client.listObjects(
+      {
+        Bucket: bucketName,
+      },
+      function (err, data) {
+        if (err) {
+          res.send({ type: "Error", message: err });
+        } else {
+          if (!data.Contents) return res.send({ type: "success", itens: data });
+          let totalsize = 0;
+          let imageSize = 0;
+          let audioSize = 0;
+          let videoSize = 0;
+          let documentSize = 0;
+          let othersSize = 0;
+
+          for (var item of data.Contents) {
+            if (!item.Size) item.Size = 0;
+            // let itemSize = convertBytes(item.Size);
+            let itemType = item.Key ? item.Key?.split(".")[1] : "";
+            totalsize += item.Size;
+
+            if (itensTypes.audio.includes(itemType)) {
+              audioSize += item.Size;
+            } else if (itensTypes.video.includes(itemType)) {
+              videoSize += item.Size;
+            } else if (itensTypes.image.includes(itemType)) {
+              imageSize += item.Size;
+            } else if (itensTypes.document.includes(itemType)) {
+              documentSize += item.Size;
+            } else {
+              othersSize += item.Size;
+            }
+          }
+          const newData = {
+            image: imageSize,
+            video: videoSize,
+            audio: audioSize,
+            document: documentSize,
+            others: othersSize,
+            total: totalsize,
+          };
+          res.send({ type: "success", sizes: newData });
         }
       }
     );
