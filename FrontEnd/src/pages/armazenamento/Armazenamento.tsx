@@ -7,6 +7,8 @@ import Axios from "../../utils/AxiosConfig";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { convertBytes } from "../../utils/bytesToSize";
+import nothingHereImg from "../../assets/imgs/nothingHere.png";
+import { toast } from "react-toastify";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type sizesType = {
@@ -29,9 +31,10 @@ export function Armazenamento() {
       ({ data }: responseType) => {
         const itensKeys = Object.keys(data.sizes);
         setSizes(data.sizes);
-        console.log(data.sizes);
       }
-    );
+    ).catch((e)=>{
+      toast.error("Algo deu errado. Porfavor reinicie seu navegador ");
+    });
   }, []);
 
   const data = {
@@ -81,9 +84,14 @@ export function Armazenamento() {
     <>
       <PageContainer>
         <PageTitle title="Armazenamento"></PageTitle>
-        <div className="grafico">
-          <Doughnut data={data} options={options} />
-        </div>
+        {Object.keys(sizes).length > 0 ? (
+          <div className="grafico">
+            <Doughnut data={data} options={options} />
+          </div>
+        ) : (
+          
+          <></>
+        )}
       </PageContainer>
     </>
   );
