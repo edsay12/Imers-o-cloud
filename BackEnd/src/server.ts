@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import s3Router from "../src/routes/s3Router";
 import * as dotenv from "dotenv";
 import userRouter from "./routes/userRouter";
+import authorization from "./middleware/authorization";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 // routes 
 
 app.use("/user", userRouter);
+app.use(authorization)
 
 app.use(s3Router);
 

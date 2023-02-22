@@ -16,7 +16,7 @@ userRouter.post("/signIn",userBodyValidator("signIn"),(req: Request, res: Respon
   }
 );
 userRouter.post("/verify",userBodyValidator("verify"),(req: Request, res: Response) => {
-    UserController.verify(req, res);
+    UserController.verifyAccout(req, res);
   }
 );
 
