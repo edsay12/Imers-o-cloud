@@ -384,3 +384,5 @@ class ControlerS3 {
 }
 
 export default new ControlerS3();
+
+// Depois de executar o código acima, o objeto selecionado será restaurado da classe de armazenamento do Amazon S3 Glacier para a classe de armazenamento padrão do Amazon S3. Observe que a restauração pode levar algum tempo para ser concluída. Você pode monitorar o status da restauração chamando o método headObject do S3 com o parâmetro Bucket e Key.
