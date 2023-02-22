@@ -354,9 +354,9 @@ class ControlerS3 {
       },
       function (err, data) {
         if (err) {
-          res.send({ type: "Error", message: err });
+          res.send({ type: "Error", message: err.message });
         } else {
-          console.log("ueppa");
+      
           res.send({ type: "success", message: "Restauração em andamento" });
         }
       }

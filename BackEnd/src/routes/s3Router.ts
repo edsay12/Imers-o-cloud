@@ -4,11 +4,11 @@ import { Request, Response, Router } from "express";
 import ControleS3 from "../controller/ControleS3";
 ("express");
 
-const routes = Router();
+const s3Router = Router();
 
 // nao mandar para o codigo
 
-routes.post(
+s3Router.post(
   "/:bucketName",
   upload.single("arquivo"),
   (req: Request, res: Response) => {
@@ -16,62 +16,62 @@ routes.post(
   }
 );
 
-routes.post("/bucket/:bucketName", (req: Request, res: Response) => {
+s3Router.post("/bucket/:bucketName", (req: Request, res: Response) => {
   ControleS3.createBucket(req, res);
 });
 
-routes.put(
+s3Router.put(
   "/updateForGlacierIR/:bucketName/:fileName",
   async (req: Request, res: Response) => {
     ControleS3.updateStorageClassForItemTrash(req, res);
   }
 );
 
-routes.delete("/:bucketName/:fileName", (req, res) => {
+s3Router.delete("/:bucketName/:fileName", (req, res) => {
   ControleS3.deleteFile(req, res);
 });
 
-routes.get("/sizes/:bucketName", (req, res) => {
+s3Router.get("/sizes/:bucketName", (req, res) => {
   ControleS3.getStorageSize(req, res);
 });
-routes.put(
+s3Router.put(
   "/updateForGlacier/:bucketName/:fileName",
   async (req: Request, res: Response) => {
     ControleS3.updateStorageClassForItem(req, res);
   }
 );
 
-routes.get("/:bucketName", async (req: Request, res: Response) => {
+s3Router.get("/:bucketName", async (req: Request, res: Response) => {
   ControleS3.getBucketItens(req, res);
 });
 
-routes.get("/:bucketName/:fileName", async (req: Request, res: Response) => {
+s3Router.get("/:bucketName/:fileName", async (req: Request, res: Response) => {
   ControleS3.getBucketItem(req, res);
 });
 
-routes.get(
+s3Router.get(
   "/url/:bucketName/:fileName",
   async (req: Request, res: Response) => {
     ControleS3.getItemUrl(req, res);
   }
 );
 
-routes.get(
+s3Router.get(
   "/restore/:bucketName/:fileName",
   async (req: Request, res: Response) => {
     ControleS3.restoreItem(req, res);
   }
 );
 
-routes.put("/trash/restore/:bucketName/:fileName", (req, res) => {
+s3Router.put("/trash/restore/:bucketName/:fileName", (req, res) => {
   ControleS3.restoreTrashItem(req, res);
 });
 
-routes.get(
+s3Router.get(
   "/trash/:bucketName/:fileName",
   async (req: Request, res: Response) => {
     ControleS3.updateStorageClassForItemTrash(req, res);
   }
 );
 
-export default routes;
+export default s3Router;
