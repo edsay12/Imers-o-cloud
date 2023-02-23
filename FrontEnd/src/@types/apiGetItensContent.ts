@@ -6,6 +6,7 @@ export type apiGetItensContent = {
         itemName: string;
         storageClass: string;
         size: any;
+        restore?:string;
         type:string;
         LastModified: string ;
       }
@@ -18,6 +19,7 @@ export type content = {
   itemName: string;
   storageClass: string;
   size: any;
+  restore?:string;
   type:string;
   LastModified: string ;
 };

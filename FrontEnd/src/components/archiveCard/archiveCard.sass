@@ -8,6 +8,7 @@
         flex-wrap: wrap
         align-items: center
         max-width: 1000px
+        
         .card
             
             .section1
@@ -23,8 +24,7 @@
             -webkit-box-shadow: -5px 10px 211px -37px rgba(0,0,0,0.51)
             -moz-box-shadow: -5px 10px 211px -37px rgba(0,0,0,0.51)
             box-shadow: -5px 10px 211px -37px rgba(0,0,0,0.51)
-            &:hover
-                border: 1px solid #583DA1
+        
             .cardHeader
                 display: flex
                 align-items: center
@@ -58,7 +58,15 @@
                     padding: 15px 20px
                     font-weight: 700
                     font-size: 14px
-                    
+.card.restore
+            border: 1px solid #2bff18
+            &:hover
+                border: none
+.card.in_process
+            border: 1px solid #cad80d
+            &:hover
+                border: none
+
                     
 
 .cardModal

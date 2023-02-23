@@ -5,7 +5,7 @@ import upload from "../middleware/upload";
 import path from "path";
 import FileSystem from "fs";
 import crypto from "crypto";
-import {convertBytes,bytesToKB} from "../utils/convertBytes";
+import { convertBytes, bytesToKB } from "../utils/convertBytes";
 import itensTypes from "../utils/ItensTypes";
 
 type awsResponse = {
@@ -36,6 +36,7 @@ type apiContent = {
       itemName?: string;
       storageClass?: string;
       type?: string;
+      restore?: any;
       size?: any;
       LastModified?: string | number;
     }
@@ -356,7 +357,6 @@ class ControlerS3 {
         if (err) {
           res.send({ type: "Error", message: err.message });
         } else {
-      
           res.send({ type: "success", message: "Restauração em andamento" });
         }
       }
@@ -377,6 +377,72 @@ class ControlerS3 {
           res.send({ type: "Error", message: err }).status(500);
         } else {
           res.send({ type: "success", url });
+        }
+      }
+    );
+  }
+
+  async bucketStatus(req: Request, res: Response) {
+    const { fileName, bucketName } = req.params;
+    if (!bucketName) {
+      return res.status(400).json({
+        type: "Error",
+        message: "nome do bucker incorreto ou inexistente",
+      });
+    }
+    const getStatus = async (Itemkey: string) => {
+      let data2: any = "";
+      const data = await this.client
+        .headObject({
+          Bucket: bucketName,
+          Key: Itemkey,
+        })
+        .promise()
+        .then((data) => {
+          return data;
+        });
+      if (await !data.Restore) return "false";
+      const str: any = await data.Restore;
+      const pattern = /ongoing-request="(.*?)"/;
+      const result = str.match(pattern);
+      if(result[1] =='false'){
+        return 'restored'
+
+      }else if(result[1]=='true'){
+        return 'in_process'
+      }
+    };
+
+    this.client.listObjects(
+      {
+        Bucket: bucketName,
+      },
+      async (err, data) => {
+        if (err) {
+          res.send({ type: "Error", message: err });
+        } else {
+          if (!data.Contents) return res.send({ type: "success", itens: data });
+          var response: apiContent = { Content: [{}] };
+          response.Content.pop();
+
+          for (var item of data.Contents) {
+            if (item.StorageClass === "GLACIER") {
+              let itemName = item.Key?.split("-")[1];
+              let itemLastModified = item.LastModified?.toDateString();
+              let itemSize = convertBytes(item.Size);
+              let itemType = item.Key?.split(".")[1];
+              response.Content.push({
+                key: item.Key,
+                type: itemType,
+                itemName: itemName,
+                restore: await getStatus(item.Key ? item.Key : ""),
+                LastModified: itemLastModified,
+                size: itemSize,
+                storageClass: item.StorageClass,
+              });
+            }
+          }
+          res.send({ type: "success", itens: response });
         }
       }
     );

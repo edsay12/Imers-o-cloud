@@ -75,3 +75,10 @@ s3Router.get(
 );
 
 export default s3Router;
+
+
+s3Router.get('/glacier/status/:bucketName/',(req,res)=>{
+  ControleS3.bucketStatus(req, res)
+
+
+})

@@ -24,6 +24,7 @@ type PropType = {
   date: string;
   fileSize: string;
   itemKey: string;
+  restore?: string;
   cardType?: string;
 };
 const iconsArray = {
@@ -45,6 +46,7 @@ export function ArchiveCard({
   fileSize,
   itemKey,
   cardType,
+  restore,
 }: PropType) {
   const [isModalCarOpen, setIsModalOpen] = useState(false);
   const location = useLocation();
@@ -74,6 +76,7 @@ export function ArchiveCard({
       `http://localhost:8081/restore/edvan7-2d6a6571fd7c373f8629/${itemKey}`
     )
       .then((data) => {
+        setIsCardReload(!isCardReload);
         return toast.success(
           "Processo de recuperação do arquivo iniciada com sucesso"
         );
@@ -148,7 +151,17 @@ export function ArchiveCard({
   return (
     <>
       <div className="cardItem">
-        <div className="card">
+        <div
+          className={
+            restore == "restored"
+              ? "card restore"
+              : restore == "false"
+              ? "card no_retored"
+              : restore == "in_process"
+              ? "card in_process"
+              : "card"
+          }
+        >
           <div className="section1">
             <div className="cardHeader">
               <div className="icoFile">
@@ -236,6 +249,73 @@ export function ArchiveCard({
                 <div className="optiontext">Lixeira</div>
               </div>
             </div>
+          ) : cardType === "GLACIER" && restore === "restored" ? (
+            <div className="options">
+              <div className="option" onClick={() => closeModal()}>
+                <div className="optionIco">
+                  <AiOutlineDownload />
+                </div>
+                <div className="optiontext">
+                  <a
+                    href={`http://localhost:8081/edvan7-2d6a6571fd7c373f8629/${itemKey}`}
+                  >
+                    Download
+                  </a>
+                </div>
+              </div>
+
+              <div
+                className="option"
+                onClick={() => {
+                  closeModal();
+                  GerarLink();
+                }}
+              >
+                <div className="optionIco">
+                  <BsLink45Deg />
+                </div>
+                <div className="optiontext">Gerar Link</div>
+              </div>
+              <div
+                className="option"
+                onClick={() => {
+                  closeModal();
+                  RecuperarDaLixeira();
+                }}
+              >
+                <div className="optionIco">
+                  <MdOutlineSettingsBackupRestore />
+                </div>
+                <div className="optiontext">Recuperar</div>
+              </div>
+              <div
+                className="option"
+                onClick={() => {
+                  closeModal();
+                  Remover();
+                }}
+              >
+                <div className="optionIco">
+                  <CiTrash />
+                </div>
+                <div className="optiontext">Remover</div>
+              </div>
+            </div>
+          ) : cardType === "GLACIER" && restore === "in_process" ? (
+            <div className="options">
+              <div
+                className="option"
+                onClick={() => {
+                  closeModal();
+                  toast.error("item em processo de restauração");
+                }}
+              >
+                <div className="optionIco">
+                  <MdOutlineSettingsBackupRestore />
+                </div>
+                <div className="optiontext">Recuperar</div>
+              </div>
+            </div>
           ) : cardType === "GLACIER" ? (
             <div className="options">
               <div
@@ -249,6 +329,18 @@ export function ArchiveCard({
                   <MdOutlineSettingsBackupRestore />
                 </div>
                 <div className="optiontext">Recuperar</div>
+              </div>
+              <div
+                className="option"
+                onClick={() => {
+                  closeModal();
+                  Remover();
+                }}
+              >
+                <div className="optionIco">
+                  <CiTrash />
+                </div>
+                <div className="optiontext">Remover</div>
               </div>
             </div>
           ) : cardType === "GLACIER_IR" ? (

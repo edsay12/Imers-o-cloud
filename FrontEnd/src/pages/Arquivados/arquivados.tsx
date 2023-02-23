@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { apiGetItensContent, content } from "../../@types/apiGetItensContent";
 import { ArchiveCard } from "../../components/archiveCard/archiveCard";
 import { Loading } from "../../components/loading/Loading";
@@ -9,12 +9,14 @@ import Axios from "../../utils/AxiosConfig";
 import "./arquivados.sass";
 import nothingHereImg from "../../assets/imgs/nothingHere.png";
 import { toast } from "react-toastify";
+import CardPageReload from "../../context/cardPageReload";
 export function Arquivados() {
   const [itens, setItens] = useState<content[]>([]);
   const [isloading, setIsloading] = useState(false);
+  const { isCardReload, setIsCardReload } = useContext(CardPageReload);
   useEffect(() => {
     setIsloading(true);
-    Axios.get("/edvan7-2d6a6571fd7c373f8629")
+    Axios.get("/glacier/status/edvan7-2d6a6571fd7c373f8629/")
       .then((data: AxiosResponse<apiGetItensContent, apiGetItensContent>) => {
         const S3Items = data.data.itens.Content;
         const Data = S3Items.filter((data) => {
@@ -28,7 +30,7 @@ export function Arquivados() {
         toast.error("Algo deu errado. Porfavor reinicie seu navegador ");
         setIsloading(false);
       });
-  }, [""]);
+  }, [isCardReload]);
   return (
     <>
       <Loading isLoading={isloading} />
@@ -45,7 +47,7 @@ export function Arquivados() {
               </section>
               <div className="cards">
                 {itens.map((data) => {
-                  console.log(data);
+                  console.log(data.restore);
                   const DataArquivo = new Date(
                     data.LastModified
                   ).toDateString();
@@ -56,6 +58,7 @@ export function Arquivados() {
                       ArchiveTypes={data.type}
                       cardTitle={data.itemName}
                       date={data.LastModified}
+                      restore={data.restore}
                       fileSize={data.size}
                       cardType={data.storageClass}
                     />
