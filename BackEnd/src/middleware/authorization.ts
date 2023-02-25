@@ -71,3 +71,19 @@ async function setUp() {
 }
 
 export default Authorization;
+// rota que faz a mesma validação
+
+// s3Router.get("/teste/teste", async (req, res) => {
+//   const id = req.header("idToken") ? req.header("idToken") : "";
+
+//   console.log(id);
+
+//   const verifier = CognitoJwtVerifier.create({
+//     userPoolId: "us-east-1_4VuOZ4VUs",
+//     tokenUse: "access",
+//     clientId: "3gh86dkjdccdd7sq9ut10b0mbe",
+//   });
+
+//   // If no error is thrown it is a valid token
+//   await (await verifier.verify(id ? id : "")).client_id
+// });

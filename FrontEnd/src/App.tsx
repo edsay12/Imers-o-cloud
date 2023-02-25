@@ -13,6 +13,8 @@ import { Armazenamento } from "./pages/armazenamento/armazenamento";
 import CardModalContext from "./context/cardModalContext";
 import CardPageReload from "./context/cardPageReload";
 import { ToastContainer } from "react-toastify";
+import { Login } from "./pages/login/Login";
+import { Cadastro } from "./pages/Cadastro/Cadastro";
 type ModalCard = {
   isModalCardOpen: any;
   setIsCardModalOpen: any;
@@ -66,6 +68,14 @@ function App() {
             <Route
               path="/help"
               element={<DeskBoard children={<h1>help</h1>} />}
+            />
+            <Route
+              path="/login"
+              element={<Login/>}
+            />
+            <Route
+              path="/cadastro"
+              element={<Cadastro/>}
             />
           </Routes>
         </CardModalContext.Provider>

@@ -45,7 +45,7 @@ export function Upload() {
       setItem("");
       setFileName("Selecione o arquivo");
       setIsloading(false)
-      toast.success('Erro desconhecido')
+      toast.error('Erro desconhecido')
 
     }
   }

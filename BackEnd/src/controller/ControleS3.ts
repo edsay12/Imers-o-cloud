@@ -55,25 +55,18 @@ class ControlerS3 {
   }
 
   // Cria um bucket
-  createBucket(req: Request, res: Response) {
-    const { bucketName } = req.params;
-    const bucket = `${bucketName}-${crypto.randomBytes(10).toString("hex")}`;
-    this.client.createBucket(
-      {
+  createBucket(bucketName: string) {
+    const bucketNameTrated = bucketName.split('@')[0].toLowerCase().replace(/[^a-zA-Z]/g, "-")
+    const bucket = `${bucketNameTrated}-${crypto.randomBytes(10).toString("hex")}`;
+    const containerName = this.client
+      .createBucket({
         Bucket: bucket,
-      },
-      function (err, data) {
-        if (err) {
-          return res.status(400).json({ type: "Error", message: err });
-        } else {
-          return res.status(200).json({
-            type: "success",
-            message: "item deletado com sucesso",
-            bucketName: data.Location,
-          });
-        }
-      }
-    );
+      })
+      .promise()
+      .then((data) => {
+        return data.Location;
+      });
+    return containerName;
   }
   // Adiciona um Item ao bucket
   async saveFile(req: Request, res: Response): Promise<void> {
@@ -405,11 +398,10 @@ class ControlerS3 {
       const str: any = await data.Restore;
       const pattern = /ongoing-request="(.*?)"/;
       const result = str.match(pattern);
-      if(result[1] =='false'){
-        return 'restored'
-
-      }else if(result[1]=='true'){
-        return 'in_process'
+      if (result[1] == "false") {
+        return "restored";
+      } else if (result[1] == "true") {
+        return "in_process";
       }
     };
 

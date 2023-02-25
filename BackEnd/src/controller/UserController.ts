@@ -2,34 +2,34 @@ import { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import AWS from "aws-sdk";
 import crypto from "crypto";
+import ControleS3 from "./ControleS3";
 
 class UserController {
   private cognitoIdentity: AWS.CognitoIdentityServiceProvider;
   private secreteHash: string =
-    "1d2vefnim9jn4fdaorsr25t5tunml796vfemdhketm4qpe40luf9";
-  private clientId: string = "7fors8odjeeebha64s8qf7gg08";
+    "19vt4r201gd52t510c5i9c6n4b24q54vebjkgo6svkuuil7e4tm9";
+  private clientId: string = "3gh86dkjdccdd7sq9ut10b0mbe";
   constructor() {
     this.cognitoIdentity = new AWS.CognitoIdentityServiceProvider({
       region: "us-east-1",
     });
   }
 
-  signUp(req: Request, res: Response) {
+  async signUp(req: Request, res: Response) {
     //validation
     const result = validationResult(req);
     if (!result.isEmpty()) {
       return res.status(422).json({ erros: result.array() });
     }
 
-    const { nickname, email, password, given_name, phone_number, family_name } =
+    const {  email, password, bucket } =
       req.body;
     let userAtt = [];
     userAtt.push({ Name: "email", Value: email });
-    userAtt.push({ Name: "phone_number", Value: phone_number });
-    userAtt.push({ Name: "given_name", Value: given_name });
-    // userAtt.push({ Name: "family_name ", Value: family_name  });
-    userAtt.push({ Name: "nickname", Value: nickname });
-
+    
+    const bucketCreatedName = await ControleS3.createBucket(email)
+    
+    userAtt.push({ Name: "custom:bucket_name", Value: bucketCreatedName });
     // Aqui e gerado um hash
     const generateHash = crypto
       .createHmac("SHA256", this.secreteHash)
@@ -37,6 +37,8 @@ class UserController {
       .digest("base64");
 
     // cognito
+
+    
 
     this.cognitoIdentity.signUp(
       {

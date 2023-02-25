@@ -3,7 +3,8 @@ import upload from "../middleware/upload";
 import { Request, Response, Router } from "express";
 import ControleS3 from "../controller/ControleS3";
 ("express");
-
+import { CognitoJwtVerifier } from "aws-jwt-verify";
+import jwt, { decode } from "jsonwebtoken";
 const s3Router = Router();
 
 // nao mandar para o codigo
@@ -16,9 +17,9 @@ s3Router.post(
   }
 );
 
-s3Router.post("/bucket/:bucketName", (req: Request, res: Response) => {
-  ControleS3.createBucket(req, res);
-});
+// s3Router.post("/bucket/:bucketName", (req: Request, res: Response) => {
+//   ControleS3.createBucket(req, res);
+// });
 
 s3Router.put(
   "/updateForGlacierIR/:bucketName/:fileName",
@@ -74,11 +75,8 @@ s3Router.get(
   }
 );
 
+s3Router.get("/glacier/status/:bucketName/", (req, res) => {
+  ControleS3.bucketStatus(req, res);
+});
+
 export default s3Router;
-
-
-s3Router.get('/glacier/status/:bucketName/',(req,res)=>{
-  ControleS3.bucketStatus(req, res)
-
-
-})

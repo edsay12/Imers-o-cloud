@@ -4,10 +4,9 @@ function userBodyValidator(type: "signUp" | "signIn" | "verify") {
   switch (type) {
     case "signUp":
       return [
-        body("nickname").notEmpty().isLength({ min: 6 }),
-        body("given_name").notEmpty().isLength({ min: 4 }), // nome
+        
         body("email").isEmail().notEmpty(),
-        body("phone_number").isMobilePhone("pt-BR"),
+       
         body("password").matches(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/)
         .withMessage('A senha deve conter pelo menos 1 número, 1 caractere especial, 1 letra maiúscula e 1 letra minúscula, com no mínimo 8 caracteres.'),
         // body("family_name").notEmpty().isString(), // family_name
