@@ -15,6 +15,9 @@ import CardPageReload from "./context/cardPageReload";
 import { ToastContainer } from "react-toastify";
 import { Login } from "./pages/login/Login";
 import { Cadastro } from "./pages/Cadastro/Cadastro";
+import { ResetPassword } from "./pages/resetPassword/ResetPassword";
+import { VerifyCode } from "./pages/verifyCode/VerifyCode";
+import { ResetPasswordVerified } from "./pages/resetPasswordVerified/ResetPasswordVerified";
 type ModalCard = {
   isModalCardOpen: any;
   setIsCardModalOpen: any;
@@ -76,6 +79,18 @@ function App() {
             <Route
               path="/cadastro"
               element={<Cadastro/>}
+            />
+            <Route
+              path="/resetPassword"
+              element={<ResetPassword/>}
+            />
+            <Route
+              path="/verify"
+              element={<VerifyCode/>}
+            />
+            <Route
+              path="/newPassword"
+              element={<ResetPasswordVerified/>}
             />
           </Routes>
         </CardModalContext.Provider>
