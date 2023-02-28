@@ -8,23 +8,18 @@ import AuthContext from "../../context/authContext";
 import Axios from "../../utils/AxiosConfig";
 import { toast } from "react-toastify";
 
-export function VerifyCode() {
+export function VerifyCodePass() {
   const [otp, setOtp] = useState({ otp: "" });
-  const { user, setUser } = useContext(AuthContext); // context
+  const email = localStorage.getItem('email')
   const navigate = useNavigate();
 
   async function verifyCode() {
-    try {
-      console.log(user)
-      await Axios.post("/user/verify",{
-        email:user,
-        code:otp.otp
-      });
-      toast.success("email verificado com sucesso");
-      navigate("/login");
-    } catch (e) {
-      toast.error('ocorreu um erro porfavor tente novamente');
+    if(!otp.otp || otp.otp.length <6){
+      return toast.error('Codigo invalido')
+
     }
+    localStorage.setItem('code',otp.otp)
+    navigate('/newPassword')
   }
 
   const handleChange = (otp: any) => setOtp({ otp });

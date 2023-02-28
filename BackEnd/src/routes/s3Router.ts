@@ -7,7 +7,6 @@ import { CognitoJwtVerifier } from "aws-jwt-verify";
 import jwt, { decode } from "jsonwebtoken";
 const s3Router = Router();
 
-// nao mandar para o codigo
 
 s3Router.post(
   "/:bucketName",
@@ -78,5 +77,6 @@ s3Router.get(
 s3Router.get("/glacier/status/:bucketName/", (req, res) => {
   ControleS3.bucketStatus(req, res);
 });
+
 
 export default s3Router;

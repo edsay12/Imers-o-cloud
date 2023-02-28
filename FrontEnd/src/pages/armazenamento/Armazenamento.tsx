@@ -25,9 +25,11 @@ type responseType = {
 };
 
 export function Armazenamento() {
+  const bucketName = localStorage.getItem("bucketName");
+
   const [sizes, setSizes] = useState<sizesType>({});
   useEffect(() => {
-    Axios.get("/sizes/edvan7-2d6a6571fd7c373f8629").then(
+    Axios.get(`/sizes/${bucketName}`).then(
       ({ data }: responseType) => {
         const itensKeys = Object.keys(data.sizes);
         setSizes(data.sizes);

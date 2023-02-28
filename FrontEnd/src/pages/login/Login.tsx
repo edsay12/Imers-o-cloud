@@ -1,34 +1,84 @@
 import "./login.sass";
 import loginImg from "../../assets/imgs/login.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaLock, FaUserAlt } from "react-icons/fa";
+import { useContext, useState } from "react";
+import Axios from "../../utils/AxiosConfig";
+import { Loading } from "../../components/loading/Loading";
+import { toast } from "react-toastify";
+import AuthContext from "../../context/authContext";
+
 
 export function Login() {
+  const [isloading,setIsloading] = useState(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // const { user, setUser } = useContext(AuthContext); // context
+  const navigate = useNavigate()
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData();
+    
+    console.log(formData);
+    setIsloading(true)
+
+    try {
+      const response = await Axios.post("/user/signIn", {
+        email,
+        password
+      });
+      console.log(response.data.AuthenticationResult
+        );
+      localStorage.setItem("UserAcess",JSON.stringify(response.data.AuthenticationResult) )
+      setIsloading(false)
+      toast.success('Login efetuado com sucesso')
+      navigate('/')
+    } catch (e: any) {
+      console.log(e);
+      setIsloading(false)
+      toast.error('Email ou senha incorretos')
+    }
+  }
   return (
+    
     <section className="login-page">
+      <Loading isLoading={isloading}/>
       <div className="login">
         <div className="loginLeft">
           <img src={loginImg} alt="" />
-          <Link to={"/cadastro"}>Create an account</Link>
         </div>
         <div className="loginRight">
           <h1>Login</h1>
-          <form action="">
+          <form onSubmit={(e) => handleSubmit(e)}>
             <div className="inputs">
               <div className="inputStyled">
                 <FaUserAlt />
-                <input type="text" placeholder="Seu Email" name="" id="" />
+                <input
+                  type="email"
+                  placeholder="Seu Email"
+                  name="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  id=""
+                />
               </div>
 
               <div className="inputStyled">
                 <FaLock />
-                <input type="password" placeholder="Sua Senha" name="" id="" />
+                <input
+                  type="password"
+                  placeholder="Sua Senha"
+                  name="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  id=""
+                />
               </div>
             </div>
 
             <button>Entrar</button>
           </form>
           <div className="resetPassword">
+            <Link to={"/cadastro"}>Criar uma nova conta</Link>
             <Link to={"/resetPassword"}>Esqueceu sua senha ? </Link>
           </div>
         </div>

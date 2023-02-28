@@ -17,9 +17,11 @@ export function Home() {
   const [itens, setItens] = useState<content[]>([]);
   const [isloading, setIsloading] = useState(false);
   const { isCardReload, setIsCardReload } = useContext(CardPageReload);
+  const bucketName = localStorage.getItem("bucketName");
+ 
   useEffect(() => {
     setIsloading(true);
-    Axios.get("/edvan7-2d6a6571fd7c373f8629")
+    Axios.get(`/${bucketName}`)
       .then((data: AxiosResponse<apiGetItensContent, apiGetItensContent>) => {
         const S3Items = data.data.itens.Content;
         const Data = S3Items.filter((data) => {

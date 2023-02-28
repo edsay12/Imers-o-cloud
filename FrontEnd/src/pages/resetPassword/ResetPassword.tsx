@@ -1,9 +1,38 @@
 import "./resetPassword.sass";
 import resetPasswordImg from "../../assets/imgs/cadastro.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaLock, FaUserAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
+import Axios from "../../utils/AxiosConfig";
+import { useContext, useState } from "react";
+import AuthContext from "../../context/authContext";
 
 export function ResetPassword() {
+  const [email, setEmail] = useState("");
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
+
+  const navigate = useNavigate()
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    
+
+    try {
+      const response = await Axios.post("/user/forgotPassword", {
+        email,
+      });
+      
+      
+      toast.success('Um codigo foi enviado para seu email')
+      localStorage.setItem("email",email)
+      navigate('/verifyPass')
+    } catch (e: any) {
+      console.log(e);
+    
+      toast.error('Ocorreu algum problema mandar o codigo')
+    }
+  }
   return (
     <section className="resetPassword-page">
       <div className="resetPassword">
@@ -14,17 +43,17 @@ export function ResetPassword() {
         <div className="resetPasswordRight">
           <h1>Redefinir sua senha</h1>
           <p>Digite seu email para que possamos enviar um codigo para alteração da sua senha</p>
-          <form action="">
+          <form onSubmit={(e)=> handleSubmit(e)}>
             <div className="inputs">
               <div className="inputStyled">
                 <FaUserAlt />
-                <input type="text" placeholder="Seu Email" name="" id="" />
+                <input type="text" placeholder="Seu Email" onChange={(e)=> setEmail(e.target.value)} name="" id="" />
               </div>
 
     
             </div>
 
-            <button>Enviar </button>
+            <button >Enviar </button>
           </form>
           
         
@@ -33,3 +62,7 @@ export function ResetPassword() {
     </section>
   );
 }
+function setIsloading(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
+

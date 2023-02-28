@@ -3,7 +3,8 @@ import s3Router from "../src/routes/s3Router";
 import * as dotenv from "dotenv";
 import userRouter from "./routes/userRouter";
 import authorization from "./middleware/authorization";
-
+import {Request,Response} from 'express'
+import { CognitoJwtVerifier } from "aws-jwt-verify";
 dotenv.config();
 
 const app: Express = express();
@@ -19,12 +20,16 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 // routes 
 
 app.use("/user", userRouter);
+
 // app.use(authorization)
+// rota que faz a mesma validação
+
+
 
 app.use(s3Router);
 

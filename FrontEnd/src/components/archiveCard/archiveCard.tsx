@@ -53,6 +53,8 @@ export function ArchiveCard({
 
   const { isModalCardOpen, setIsCardModalOpen } = useContext(CardModalContext); // context
   const { isCardReload, setIsCardReload } = useContext(CardPageReload);
+  const bucketName = localStorage.getItem("bucketName");
+
 
   function openCardModal() {
     if (isModalCardOpen) {
@@ -73,7 +75,7 @@ export function ArchiveCard({
 
   async function Recuperar() {
     await Axios.get(
-      `http://localhost:8081/restore/edvan7-2d6a6571fd7c373f8629/${itemKey}`
+      `http://localhost:8081/restore/${bucketName}/${itemKey}`
     )
       .then((data) => {
         setIsCardReload(!isCardReload);
@@ -89,7 +91,7 @@ export function ArchiveCard({
   }
   async function GerarLink() {
     await Axios.get(
-      `http://localhost:8081/url/edvan7-2d6a6571fd7c373f8629/${itemKey}`
+      `http://localhost:8081/url/${bucketName}/${itemKey}`
     )
       .then((data) => {
         navigator.clipboard.writeText(data.data.url);
@@ -101,7 +103,7 @@ export function ArchiveCard({
   }
   async function arquivar() {
     await Axios.put(
-      `http://localhost:8081/updateForGlacier/edvan7-2d6a6571fd7c373f8629/${itemKey}`
+      `http://localhost:8081/updateForGlacier/${bucketName}/${itemKey}`
     )
       .then((data) => {
         setIsCardReload(!isCardReload);
@@ -113,7 +115,7 @@ export function ArchiveCard({
   }
   async function Lixeira() {
     await Axios.put(
-      `http://localhost:8081/updateForGlacierIR/edvan7-2d6a6571fd7c373f8629/${itemKey}`
+      `http://localhost:8081/updateForGlacierIR/${bucketName}/${itemKey}`
     )
       .then((data) => {
         setIsCardReload(!isCardReload);
@@ -125,7 +127,7 @@ export function ArchiveCard({
   }
   async function Remover() {
     await Axios.delete(
-      `http://localhost:8081/edvan7-2d6a6571fd7c373f8629/${itemKey}`
+      `http://localhost:8081/${bucketName}/${itemKey}`
     )
       .then((data) => {
         setIsCardReload(!isCardReload);
@@ -137,7 +139,7 @@ export function ArchiveCard({
   }
   async function RecuperarDaLixeira() {
     await Axios.put(
-      `http://localhost:8081/trash/restore/edvan7-2d6a6571fd7c373f8629/${itemKey}`
+      `http://localhost:8081/trash/restore/${bucketName}/${itemKey}`
     )
       .then((data) => {
         setIsCardReload(!isCardReload);
@@ -200,7 +202,7 @@ export function ArchiveCard({
                 </div>
                 <div className="optiontext">
                   <a
-                    href={`http://localhost:8081/edvan7-2d6a6571fd7c373f8629/${itemKey}`}
+                    href={`http://localhost:8081/${bucketName}/${itemKey}`}
                   >
                     Download
                   </a>
@@ -257,7 +259,7 @@ export function ArchiveCard({
                 </div>
                 <div className="optiontext">
                   <a
-                    href={`http://localhost:8081/edvan7-2d6a6571fd7c373f8629/${itemKey}`}
+                    href={`http://localhost:8081/${bucketName}/${itemKey}`}
                   >
                     Download
                   </a>
@@ -351,7 +353,7 @@ export function ArchiveCard({
                 </div>
                 <div className="optiontext">
                   <a
-                    href={`http://localhost:8081/edvan7-2d6a6571fd7c373f8629/${itemKey}`}
+                    href={`http://localhost:8081/${bucketName}/${itemKey}`}
                   >
                     Download
                   </a>

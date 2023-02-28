@@ -10,11 +10,11 @@ import { Request, Response } from "express";
 var pems: { [key: string]: any } = {};
 
 const region = "us-east-1";
-const userGroupId = "us-east-1_hjZ8wxa9f";
+const userGroupId = "us-east-1_4VuOZ4VUs";
 
-function Authorization(req: Request, res: Response, next: NextFunction) {
-  setUp();
-  const token  = req.header('Authorization');
+async function Authorization(req: Request, res: Response, next: NextFunction) {
+  await setUp().then(()=>{
+    const token  = req.header('Authorization');
     console.log(token)
     if (!token) return res.status(401).end();
 
@@ -29,6 +29,7 @@ function Authorization(req: Request, res: Response, next: NextFunction) {
     console.log(pem)
     if (!pem) {
       res.status(401).end()
+      console.log('nao tenho uma pem')
       return
     }
     jwt.verify(token, pem, function (err: any, payload: any) {
@@ -39,6 +40,8 @@ function Authorization(req: Request, res: Response, next: NextFunction) {
         next()
       }
     })
+  })
+  
   
 }
 
@@ -71,19 +74,3 @@ async function setUp() {
 }
 
 export default Authorization;
-// rota que faz a mesma validação
-
-// s3Router.get("/teste/teste", async (req, res) => {
-//   const id = req.header("idToken") ? req.header("idToken") : "";
-
-//   console.log(id);
-
-//   const verifier = CognitoJwtVerifier.create({
-//     userPoolId: "us-east-1_4VuOZ4VUs",
-//     tokenUse: "access",
-//     clientId: "3gh86dkjdccdd7sq9ut10b0mbe",
-//   });
-
-//   // If no error is thrown it is a valid token
-//   await (await verifier.verify(id ? id : "")).client_id
-// });

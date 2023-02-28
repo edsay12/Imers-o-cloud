@@ -8,9 +8,15 @@ import { FaRegNewspaper } from "react-icons/fa";
 import { SlTrash } from "react-icons/sl";
 import { BsArchive } from "react-icons/bs";
 import {MdUploadFile} from 'react-icons/md'
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 export function SideBar() {
     const [isSideBarClosed,SetIsSideBarClosed] = useState(false)
+    const navigate = useNavigate()
+    function logout(){
+      localStorage.removeItem('UserAcess')
+      navigate('/login')
+
+    }
   return (
     <div className={`sideBar ${isSideBarClosed ? 'close' : ''}` }>
         <div className="sideButton" onClick={()=>SetIsSideBarClosed(!isSideBarClosed)}>
@@ -119,7 +125,8 @@ export function SideBar() {
           </div>
         </NavLink>
         <NavLink
-          to={"/sair"}
+          to={"/login"}
+          onClick={logout}
           className="link"
           style={({ isActive }) => ({
             backgroundColor: isActive ? "#7e56dac9" : "",

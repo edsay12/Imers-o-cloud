@@ -14,6 +14,8 @@ export function Upload() {
   const [isloading,setIsloading] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const bucketName = localStorage.getItem("bucketName");
+
     e.preventDefault();
     const formData = new FormData();
     formData.append("arquivo", item);
@@ -26,7 +28,7 @@ export function Upload() {
     try {
       setIsloading(true)
       const response = await Axios.post(
-        "/edvan7-2d6a6571fd7c373f8629/",
+        `/${bucketName}`,
         formData,
         {
           headers: {
