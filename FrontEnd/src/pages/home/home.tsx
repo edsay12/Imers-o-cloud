@@ -55,9 +55,10 @@ export function Home() {
 
           {itens.length > 0 ? (
             <div className="cards">
-              {itens.map((data) => {
+              {itens.map((data,index) => {
                 return (
                   <ArchiveCard
+                  key={index}
                     itemKey={data.key}
                     ArchiveTypes={data.type}
                     cardTitle={data.itemName}

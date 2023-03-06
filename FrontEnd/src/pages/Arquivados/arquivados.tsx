@@ -54,7 +54,7 @@ export function Arquivados() {
                 </p>
               </section>
               <div className="cards">
-                {itens.map((data) => {
+                {itens.map((data,index) => {
                  
                   const DataArquivo = new Date(
                     data.LastModified
@@ -62,6 +62,7 @@ export function Arquivados() {
 
                   return (
                     <ArchiveCard
+                      key={index}
                       itemKey={data.key}
                       ArchiveTypes={data.type}
                       cardTitle={data.itemName}
