@@ -23,12 +23,13 @@ export function Cadastro() {
     e.preventDefault();
     const formData = new FormData();
     
-    console.log(formData);
+   
     setIsloading(true)
 
     if(password1 != password2){
       setIsloading(false)
       toast.error('Senhas não conferem')
+      return;
 
     }
 
@@ -37,14 +38,13 @@ export function Cadastro() {
         email,
         password:password1
       });
-      console.log(response.data.AuthenticationResult
-        );
+     
       setIsloading(false)
       setUser(email)
       toast.success('Um codigo foi enviado para seu email')
       navigate('/verify')
     } catch (e: any) {
-      console.log(e);
+      
       setIsloading(false)
       toast.error('Ocorreu algum problema ao fazer sua conta')
     }

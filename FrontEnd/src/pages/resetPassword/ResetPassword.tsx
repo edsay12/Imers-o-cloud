@@ -9,8 +9,7 @@ import AuthContext from "../../context/authContext";
 
 export function ResetPassword() {
   const [email, setEmail] = useState("");
-  const [password1, setPassword1] = useState("");
-  const [password2, setPassword2] = useState("");
+ 
 
   const navigate = useNavigate()
 
@@ -28,7 +27,7 @@ export function ResetPassword() {
       localStorage.setItem("email",email)
       navigate('/verifyPass')
     } catch (e: any) {
-      console.log(e);
+     
     
       toast.error('Ocorreu algum problema mandar o codigo')
     }

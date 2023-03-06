@@ -15,12 +15,14 @@ export function VerifyCode() {
 
   async function verifyCode() {
     try {
-      console.log(user)
+      
       await Axios.post("/user/verify",{
         email:user,
         code:otp.otp
       });
       toast.success("email verificado com sucesso");
+      localStorage.removeItem('code')
+      localStorage.removeItem('email')
       navigate("/login");
     } catch (e) {
       toast.error('ocorreu um erro porfavor tente novamente');
@@ -28,7 +30,7 @@ export function VerifyCode() {
   }
 
   const handleChange = (otp: any) => setOtp({ otp });
-  console.log(otp);
+ 
 
   return (
     <section className="verifyCode-page">

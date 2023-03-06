@@ -15,8 +15,7 @@ class UserController {
     this.cognitoIdentity = new AWS.CognitoIdentityServiceProvider({
       region: "us-east-1",
     });
-    console.log(process.env.COGNITO_SECRET);
-    console.log(process.env.COGNITO_CID);
+    
   }
 
   async signUp(req: Request, res: Response) {
@@ -54,7 +53,7 @@ class UserController {
           res.send(err);
         } else {
           if (typeof data.statusCode != 'undefined') {
-            console.log(data.statusCode)
+           
             res.status(data.statusCode).send(data);
           }else{
             res.send(data.message).status(200);

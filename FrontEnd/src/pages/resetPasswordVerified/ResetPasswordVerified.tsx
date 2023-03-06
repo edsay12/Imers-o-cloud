@@ -27,11 +27,13 @@ export function ResetPasswordVerified() {
       
       
       toast.success('nova senha configurada com sucesso')
+      localStorage.removeItem('code')
+      localStorage.removeItem('email')
       navigate('/login')
     } catch (e: any) {
-      console.log(e);
+      
     
-      toast.error('Ocorreu alguns problemas ao trocar sua senha.')
+      toast.error('Codigo incorreto.')
     }
   }
   return (
@@ -46,11 +48,11 @@ export function ResetPasswordVerified() {
             <div className="inputs">
             <div className="inputStyled">
                 <FaLock />
-                <input type="password" placeholder="Digite sua nova senha" onChange={(e)=>setNewPassword1(e.target.value)} name="" id="" />
+                <input type="password" placeholder="Digite sua nova senha" onChange={(e)=>setNewPassword1(e.target.value)} name=""  />
               </div>
               <div className="inputStyled">
                 <FaLockOpen />
-                <input type="password" placeholder="Repita sua nova senha" onChange={(e)=>setNewPassword2(e.target.value)} name="" id="" />
+                <input type="password" placeholder="Repita sua nova senha" onChange={(e)=>setNewPassword2(e.target.value)} name="" />
               </div>
 
     

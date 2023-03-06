@@ -15,7 +15,7 @@ const userGroupId = "us-east-1_4VuOZ4VUs";
 async function Authorization(req: Request, res: Response, next: NextFunction) {
   await setUp().then(()=>{
     const token  = req.header('Authorization');
-    console.log(token)
+   
     if (!token) return res.status(401).end();
 
     let decodedJwt: any = jwt.decode(token, { complete: true });
@@ -23,13 +23,13 @@ async function Authorization(req: Request, res: Response, next: NextFunction) {
       res.status(401).end()
       return
     }
-    console.log(decodedJwt)
+    
     let kid = decodedJwt.header.kid;
     let pem = pems[kid];
-    console.log(pem)
+  
     if (!pem) {
       res.status(401).end()
-      console.log('nao tenho uma pem')
+    
       return
     }
     jwt.verify(token, pem, function (err: any, payload: any) {
@@ -65,11 +65,11 @@ async function setUp() {
       pems[key_id] = pem;
       
     }
-    console.log('got pem')
+    
     return;
   } catch (error) {
-    console.log(error);
-    console.log("Error! Unable to download JWKs");
+   
+    
   }
 }
 

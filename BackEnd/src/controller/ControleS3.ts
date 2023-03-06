@@ -81,7 +81,7 @@ class ControlerS3 {
     const ContentType = mime.getType(originalPath);
 
     if (!ContentType) {
-      //console.log("Arquivo não encontrado")
+   
       throw new Error("file not found");
     }
 
@@ -132,7 +132,7 @@ class ControlerS3 {
       },
       function (err, data) {
         if (err) {
-          console.log(err);
+          
           return res.status(400).json({ type: "Error", message: err });
         } else {
           return res
@@ -329,7 +329,7 @@ class ControlerS3 {
       },
       function (err, url) {
         if (err) {
-          console.log(err);
+          
           res.send({ type: "Error", message: err }).status(500);
         } else {
           res.send({ type: "success", url });
@@ -366,7 +366,7 @@ class ControlerS3 {
       },
       function (err, url) {
         if (err) {
-          console.log(err);
+          
           res.send({ type: "Error", message: err }).status(500);
         } else {
           res.send({ type: "success", url });

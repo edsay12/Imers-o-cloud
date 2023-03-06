@@ -23,7 +23,7 @@ export function VerifyCodePass() {
   }
 
   const handleChange = (otp: any) => setOtp({ otp });
-  console.log(otp);
+
 
   return (
     <section className="verifyCode-page">

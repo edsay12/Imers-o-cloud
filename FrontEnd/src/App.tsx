@@ -22,6 +22,7 @@ import { VerifyCode } from "./pages/verifyCode/VerifyCode";
 import { ResetPasswordVerified } from "./pages/resetPasswordVerified/ResetPasswordVerified";
 import { VerifyCodePass } from "./pages/verifyCodePass/VerifyCode";
 import Axios from "./utils/AxiosConfig";
+import GetToken from "./utils/GetToken";
 
 type ModalCard = {
   isModalCardOpen: any;
@@ -35,15 +36,26 @@ function PrivateRoute({
   children: JSX.Element;
   redirectTo: string;
 }) {
-  var isAuthenticate = true;
+  var isAuthenticate = false;
   const getUser = localStorage.getItem("UserAcess")
     ? (isAuthenticate = true)
     : (isAuthenticate = false);
 
+  const token = GetToken();
+  Axios.get("/verifyToken", {
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then(() => {})
+    .catch((e) => {
+      
+      localStorage.removeItem("UserAcess");
+    });
+
   if (isAuthenticate) {
     const getToken1 = localStorage.getItem("UserAcess");
     const getToken = JSON.parse(getToken1!);
-
     Axios.get("/user/getS3BucketName", {
       headers: {
         IdToken: getToken.IdToken,
@@ -56,11 +68,27 @@ function PrivateRoute({
   return isAuthenticate ? children : <Navigate to={redirectTo} />;
 }
 
-// function PrivateLogin({ children, redirectTo }) {
-//   const isAuthenticate = useSelector(state => state.auth.isAuthenticate)
+function IsLoged({ children, redirectTo }) {
+  let isAuthenticate = false
+  const getUser = localStorage.getItem("UserAcess")
+    ? (isAuthenticate = true)
+    : (isAuthenticate = false);
 
-//   return !isAuthenticate ? children : <Navigate to={redirectTo} />;
-// }
+  const token = GetToken();
+  Axios.get("/verifyToken", {
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then(() => {})
+    .catch((e) => {
+     
+      localStorage.removeItem("UserAcess");
+    });
+  
+
+  return !isAuthenticate ? children : <Navigate to={redirectTo} />;
+}
 
 function App() {
   const [count, setCount] = useState(0);
@@ -99,29 +127,60 @@ function App() {
               />
               <Route
                 path="/upload"
-                element={<DeskBoard children={<Upload />} />}
+                element={
+                  <PrivateRoute
+                    redirectTo={"/login"}
+                    children={<DeskBoard children={<Upload />} />}
+                  />
+                }
               />
               <Route
                 path="/armazenamento"
-                element={<DeskBoard children={<Armazenamento />} />}
+                element={
+                  <PrivateRoute
+                    redirectTo={"/login"}
+                    children={<DeskBoard children={<Armazenamento />} />}
+                  />
+                }
               />
               <Route
                 path="/arquivado"
-                element={<DeskBoard children={<Arquivados />} />}
+                element={
+                  <PrivateRoute
+                    redirectTo={"/login"}
+                    children={<DeskBoard children={<Arquivados />} />}
+                  />
+                }
               />
               <Route
                 path="/lixeira"
-                element={<DeskBoard children={<Lixeira />} />}
+                element={
+                  <PrivateRoute
+                    redirectTo={"/login"}
+                    children={<DeskBoard children={<Lixeira />} />}
+                  />
+                }
               />
               <Route
                 path="/configuraçoes"
-                element={<DeskBoard children={<h1>configuraçoes</h1>} />}
+                element={
+                  <PrivateRoute
+                    redirectTo={"/login"}
+                    children={<DeskBoard children={<h1>configuraçoes</h1>} />}
+                  />
+                }
               />
               <Route
                 path="/help"
-                element={<DeskBoard children={<h1>help</h1>} />}
+                element={
+                  <PrivateRoute
+                    redirectTo={"/login"}
+                    children={<DeskBoard children={<h1>help</h1>} />}
+                  />
+                }
               />
-              <Route path="/login" element={<Login />} />
+              
+              <Route path="/login"  element={<IsLoged redirectTo={'/'} children={<Login/>}/>} />
               <Route path="/cadastro" element={<Cadastro />} />
               <Route path="/resetPassword" element={<ResetPassword />} />
               <Route path="/verify" element={<VerifyCode />} />

@@ -16,6 +16,7 @@ import { useLocation } from "react-router-dom";
 import Axios from "../../utils/AxiosConfig";
 import CardPageReload from "../../context/cardPageReload";
 import { toast } from "react-toastify";
+import GetToken from "../../utils/GetToken";
 
 type ArchiveTypes = "file" | "txt" | "jpeg" | "png" | "mp3" | "mp4" | string;
 type PropType = {
@@ -54,7 +55,7 @@ export function ArchiveCard({
   const { isModalCardOpen, setIsCardModalOpen } = useContext(CardModalContext); // context
   const { isCardReload, setIsCardReload } = useContext(CardPageReload);
   const bucketName = localStorage.getItem("bucketName");
-
+  const token = GetToken();
 
   function openCardModal() {
     if (isModalCardOpen) {
@@ -74,9 +75,11 @@ export function ArchiveCard({
   }, [location]);
 
   async function Recuperar() {
-    await Axios.get(
-      `http://localhost:8081/restore/${bucketName}/${itemKey}`
-    )
+    await Axios.get(`http://localhost:8081/restore/${bucketName}/${itemKey}`, {
+      headers: {
+        Authorization: token,
+      },
+    })
       .then((data) => {
         setIsCardReload(!isCardReload);
         return toast.success(
@@ -90,9 +93,11 @@ export function ArchiveCard({
       });
   }
   async function GerarLink() {
-    await Axios.get(
-      `http://localhost:8081/url/${bucketName}/${itemKey}`
-    )
+    await Axios.get(`http://localhost:8081/url/${bucketName}/${itemKey}`, {
+      headers: {
+        Authorization: token,
+      },
+    })
       .then((data) => {
         navigator.clipboard.writeText(data.data.url);
         return toast.success("Link copiado com sucesso");
@@ -103,7 +108,13 @@ export function ArchiveCard({
   }
   async function arquivar() {
     await Axios.put(
-      `http://localhost:8081/updateForGlacier/${bucketName}/${itemKey}`
+      `http://localhost:8081/updateForGlacier/${bucketName}/${itemKey}`,
+      {},
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
     )
       .then((data) => {
         setIsCardReload(!isCardReload);
@@ -115,7 +126,13 @@ export function ArchiveCard({
   }
   async function Lixeira() {
     await Axios.put(
-      `http://localhost:8081/updateForGlacierIR/${bucketName}/${itemKey}`
+      `http://localhost:8081/updateForGlacierIR/${bucketName}/${itemKey}`,
+      {},
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
     )
       .then((data) => {
         setIsCardReload(!isCardReload);
@@ -126,9 +143,11 @@ export function ArchiveCard({
       });
   }
   async function Remover() {
-    await Axios.delete(
-      `http://localhost:8081/${bucketName}/${itemKey}`
-    )
+    await Axios.delete(`http://localhost:8081/${bucketName}/${itemKey}`, {
+      headers: {
+        Authorization: token,
+      },
+    })
       .then((data) => {
         setIsCardReload(!isCardReload);
         return toast.success("O Item foi deletado permanentemente");
@@ -139,7 +158,12 @@ export function ArchiveCard({
   }
   async function RecuperarDaLixeira() {
     await Axios.put(
-      `http://localhost:8081/trash/restore/${bucketName}/${itemKey}`
+      `http://localhost:8081/trash/restore/${bucketName}/${itemKey}`,{},
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
     )
       .then((data) => {
         setIsCardReload(!isCardReload);
@@ -201,9 +225,7 @@ export function ArchiveCard({
                   <AiOutlineDownload />
                 </div>
                 <div className="optiontext">
-                  <a
-                    href={`http://localhost:8081/${bucketName}/${itemKey}`}
-                  >
+                  <a href={`http://localhost:8081/${bucketName}/${itemKey}`}>
                     Download
                   </a>
                 </div>
@@ -258,9 +280,7 @@ export function ArchiveCard({
                   <AiOutlineDownload />
                 </div>
                 <div className="optiontext">
-                  <a
-                    href={`http://localhost:8081/${bucketName}/${itemKey}`}
-                  >
+                  <a href={`http://localhost:8081/${bucketName}/${itemKey}`}>
                     Download
                   </a>
                 </div>
@@ -352,9 +372,7 @@ export function ArchiveCard({
                   <AiOutlineDownload />
                 </div>
                 <div className="optiontext">
-                  <a
-                    href={`http://localhost:8081/${bucketName}/${itemKey}`}
-                  >
+                  <a href={`http://localhost:8081/${bucketName}/${itemKey}`}>
                     Download
                   </a>
                 </div>

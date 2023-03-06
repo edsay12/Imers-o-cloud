@@ -20,7 +20,7 @@ export function Login() {
     e.preventDefault();
     const formData = new FormData();
     
-    console.log(formData);
+    
     setIsloading(true)
 
     try {
@@ -28,14 +28,13 @@ export function Login() {
         email,
         password
       });
-      console.log(response.data.AuthenticationResult
-        );
+      
       localStorage.setItem("UserAcess",JSON.stringify(response.data.AuthenticationResult) )
       setIsloading(false)
       toast.success('Login efetuado com sucesso')
       navigate('/')
     } catch (e: any) {
-      console.log(e);
+      
       setIsloading(false)
       toast.error('Email ou senha incorretos')
     }
@@ -59,7 +58,7 @@ export function Login() {
                   placeholder="Seu Email"
                   name="email"
                   onChange={(e) => setEmail(e.target.value)}
-                  id=""
+                  
                 />
               </div>
 
@@ -70,7 +69,7 @@ export function Login() {
                   placeholder="Sua Senha"
                   name="password"
                   onChange={(e) => setPassword(e.target.value)}
-                  id=""
+                  
                 />
               </div>
             </div>

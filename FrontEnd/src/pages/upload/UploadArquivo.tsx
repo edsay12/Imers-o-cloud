@@ -6,63 +6,60 @@ import uploadImg from "../../assets/imgs/uploadImg.png";
 import Axios from "../../utils/AxiosConfig";
 import { Loading } from "../../components/loading/Loading";
 import { toast } from "react-toastify";
+import GetToken from "../../utils/GetToken";
 export function Upload() {
   const [SelectedButton, setSelectedbutton] = useState(false);
   const [fileName, setFileName] = useState("Selecione o arquivo");
   const [isSelected, setIsSelected] = useState(false);
   const [item, setItem] = useState<any | void>("");
-  const [isloading,setIsloading] = useState(false)
+  const [isloading, setIsloading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-  const bucketName = localStorage.getItem("bucketName");
+    const bucketName = localStorage.getItem("bucketName");
+    const token = GetToken();
 
     e.preventDefault();
     const formData = new FormData();
     formData.append("arquivo", item);
 
-    console.log(formData);
+    
     if (!item) {
       toast.error("Imagem não selecionada");
       return;
     }
     try {
-      setIsloading(true)
-      const response = await Axios.post(
-        `/${bucketName}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      setIsloading(true);
+      const response = await Axios.post(`/${bucketName}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "Authorization": token,
+        },
+      });
 
-      console.log(response);
-      setIsloading(false)
+      
+      setIsloading(false);
       setItem("");
       setFileName("Selecione o arquivo");
-      toast.success('item adicionado com sucesso')
-
+      toast.success("item adicionado com sucesso");
     } catch (error) {
       setItem("");
       setFileName("Selecione o arquivo");
-      setIsloading(false)
-      toast.error('Erro desconhecido')
-
+      setIsloading(false);
+      toast.error("Erro desconhecido");
     }
   }
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
-      console.log(e.target.files[0].name);
+      
       setFileName(e.target.files[0].name);
       setItem(e.target.files[0]);
-      e.target.value = '';
+      e.target.value = "";
     } else setFileName("Selecione o arquivo");
   }
 
   return (
     <>
-    <Loading isLoading={isloading}/>
+      <Loading isLoading={isloading} />
       <main className="upload">
         <section className="title">
           Cadastro de um novo item no banco de dados

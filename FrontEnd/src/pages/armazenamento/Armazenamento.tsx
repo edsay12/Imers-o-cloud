@@ -9,6 +9,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { convertBytes } from "../../utils/bytesToSize";
 import nothingHereImg from "../../assets/imgs/nothingHere.png";
 import { toast } from "react-toastify";
+import GetToken from "../../utils/GetToken";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type sizesType = {
@@ -26,10 +27,15 @@ type responseType = {
 
 export function Armazenamento() {
   const bucketName = localStorage.getItem("bucketName");
+  const token = GetToken();
 
   const [sizes, setSizes] = useState<sizesType>({});
   useEffect(() => {
-    Axios.get(`/sizes/${bucketName}`).then(
+    Axios.get(`/sizes/${bucketName}`,{
+      headers:{
+        Authorization:token
+      }
+    }).then(
       ({ data }: responseType) => {
         const itensKeys = Object.keys(data.sizes);
         setSizes(data.sizes);
