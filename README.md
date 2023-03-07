@@ -93,7 +93,9 @@ Se for o caso, liste tarefas/funcionalidades que ainda precisam ser implementada
 
 Liste o time responsável pelo desenvolvimento do projeto
 
-| [<img src="https://avatars.githubusercontent.com/u/72822474?s=400&u=9ec5bffa52a85c17479d67b7bc04d6811d8a6c74&v=4" width=115><br><sub>Edvan Silva</sub>](https://github.com/edsay12) |  [<img src="https://avatars.githubusercontent.com/u/70728756?v=4" width=115><br><sub>Matheus Francisco</sub>](https://github.com/matheus-nbx52) 
+| [<img src="https://avatars.githubusercontent.com/u/72822474?s=400&u=9ec5bffa52a85c17479d67b7bc04d6811d8a6c74&v=4" width=115><br><sub>Edvan Silva</sub>](https://github.com/edsay12) |  [<img src="https://avatars.githubusercontent.com/u/70728756?v=4" width=115><br><sub>Matheus Francisco</sub>](https://github.com/matheus-nbx52) |
+| :---: | :---: |
+
 ## Licença 
 
 The [MIT License]() (MIT)
