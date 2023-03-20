@@ -35,16 +35,27 @@
 
 ## Funcionalidades
 
-:heavy_check_mark: Funcionalidade 1  
+:heavy_check_mark: Login com o AWS Cognito
 
-:heavy_check_mark: Funcionalidade 2  
+:heavy_check_mark: Validação de acesso via e-mail 
 
-:heavy_check_mark: Funcionalidade 3  
+:heavy_check_mark: Criação de usuario com o AWS Cognito  
 
-:heavy_check_mark: Funcionalidade 4  
+:heavy_check_mark: Recuperação de senha via e-mail
 
-## Layout ou Deploy da Aplicação :dash:
+:heavy_check_mark: Upload de itens para um bucket S3
 
+:heavy_check_mark: Download de um item do bucket S3   
+
+:heavy_check_mark: Geração de link para compartilhamento de item do bucket S3 
+
+:heavy_check_mark: Arquivamento de um item do bucket S3 
+
+:heavy_check_mark: Recuperação de um item arquivado
+
+:heavy_check_mark: Mandar item para a lixeira
+
+:heavy_check_mark: Mandar Verificação do volume dos arquivos armazenados
 
 ## Pré-requisitos
 
@@ -53,41 +64,77 @@
 ...
 
 
-## Como rodar a aplicação :arrow_forward:
+## Como rodar a aplicação :arrow_forward
+
+
 
 No terminal, clone o projeto: 
 
 ```
-git clone https://github.com/React-Bootcamp-WoMarkersCode/certificate-generator
+git clone https://github.com/edsay12/Imersao-cloud.git
 ```
+Apos isso, a pasta chamada backend e a pasta frontend devem ser abertas: 
+```
+1-) cd backend 
+2-) cd frontend
+```
+em ambas as pastas, deve ser executado o seguinte comandos:
 
+```
+npm i 
+```
+Apos isso, na pasta backend deve ser criado o arquivo .env e dentro dele deve ser colocado as seguinte informações:
+
+```
+NODE_PORT= "Porta node de sua preferência"
+
+COGNITO_SECRET= "Secret do cognito"
+COGNITO_CID= "ClientId do cognito"
+
+aws_access_key_id= "Chave de acesso Aws"
+aws_secret_access_key= "Secret aws"
+aws_session_token= "Token da seção"
+```
+Feito as configurações, Em ambas as pastas, deve ser executado o seguinte comandos:
+
+```
+npm i 
+```
+Pronto o aplicativo ja estara iniciando.
 ... 
 
-Coloque um passo a passo para rodar a sua aplicação. **Dica: clone o próprio projeto e verfique se o passo a passo funciona**
+📍 O codigo dese funcionar no:
+```
+http://localhost:5173
+```
 
 
 
 ## Linguagens, dependencias e libs utilizadas :books:
 
 - [React](https://pt-br.reactjs.org/docs/create-a-new-react-app.html)
-- [React PDF](https://react-pdf.org/)
+- [React Toastify](https://www.npmjs.com/package/react-toastify)
+- [React Chartjs2](https://react-chartjs-2.js.org/)
+- [Multler](https://www.npmjs.com/package/multer)
+- [Express](https://expressjs.com/pt-br/)
+- [Aws Sdk](https://aws.amazon.com/pt/visualstudiocode/)
+
+
 
 ...
 
 
-## Resolvendo Problemas :exclamation:
-
-Em [issues]() foram abertos alguns problemas gerados durante o desenvolvimento desse projeto e como foram resolvidos. 
 
 ## Tarefas em aberto
 
 Se for o caso, liste tarefas/funcionalidades que ainda precisam ser implementadas na sua aplicação
 
-:memo: Tarefa 1 
+:memo: Adição de escolha na forma de armazenamento (armazenamento arquivo inteiro / armazenamento multparte)
 
-:memo: Tarefa 2 
+:memo: Melhorar visual do app
 
-:memo: Tarefa 3 
+:memo: Adicinar estrutura de pastas
+
 
 ## Desenvolvedores/Contribuintes :octocat:
 
@@ -100,4 +147,4 @@ Liste o time responsável pelo desenvolvimento do projeto
 
 The [MIT License]() (MIT)
 
-Copyright :copyright: Ano - Titulo do Projeto
+Copyright :copyright: 2023 - DriveS3
