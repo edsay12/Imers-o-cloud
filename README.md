@@ -136,6 +136,11 @@ Se for o caso, liste tarefas/funcionalidades que ainda precisam ser implementada
 :memo: Adicinar estrutura de pastas
 
 
+## Relatorio do projeto 📟
+
+- https://docs.google.com/document/d/1S9sC3tmEDC-ErYitlXrXmkUpEtWPKTs0o_lO4c4RGe0/edit#
+
+
 ## Desenvolvedores/Contribuintes :octocat:
 
 Liste o time responsável pelo desenvolvimento do projeto
