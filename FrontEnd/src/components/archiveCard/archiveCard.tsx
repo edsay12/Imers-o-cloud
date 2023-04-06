@@ -18,10 +18,19 @@ import CardPageReload from "../../context/cardPageReload";
 import { toast } from "react-toastify";
 import GetToken from "../../utils/GetToken";
 
-type ArchiveTypes = "file" | "txt" | "jpeg" | "png" | "mp3" | "mp4" | string;
+type ArchiveTypes =
+  | "file"
+  | "txt"
+  | "jpeg"
+  | "png"
+  | "mp3"
+  | "mp4"
+  | "pdf"
+  | "gif"
+ 
 type PropType = {
   cardTitle: string;
-  ArchiveTypes: ArchiveTypes;
+  ArchiveTypes: ArchiveTypes | string;
   date: string;
   fileSize: string;
   itemKey: string;
@@ -52,8 +61,9 @@ export function ArchiveCard({
   const [isModalCarOpen, setIsModalOpen] = useState(false);
   const location = useLocation();
 
-  const { isModalCardOpen, setIsCardModalOpen } = useContext(CardModalContext); // context
-  const { isCardReload, setIsCardReload } = useContext(CardPageReload);
+  const { isModalCardOpen, setIsCardModalOpen } =
+    useContext<any>(CardModalContext); // context
+  const { isCardReload, setIsCardReload } = useContext<any>(CardPageReload);
   const bucketName = localStorage.getItem("bucketName");
   const token = GetToken();
 
@@ -158,7 +168,8 @@ export function ArchiveCard({
   }
   async function RecuperarDaLixeira() {
     await Axios.put(
-      `http://localhost:8081/trash/restore/${bucketName}/${itemKey}`,{},
+      `http://localhost:8081/trash/restore/${bucketName}/${itemKey}`,
+      {},
       {
         headers: {
           Authorization: token,

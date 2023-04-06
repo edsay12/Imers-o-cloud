@@ -68,7 +68,7 @@ function PrivateRoute({
   return isAuthenticate ? children : <Navigate to={redirectTo} />;
 }
 
-function IsLoged({ children, redirectTo }) {
+function IsLoged({ children, redirectTo }:{children:any, redirectTo:any}) {
   let isAuthenticate = false
   const getUser = localStorage.getItem("UserAcess")
     ? (isAuthenticate = true)

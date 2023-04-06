@@ -20,6 +20,14 @@ type sizesType = {
   total: number;
   video: number;
 };
+const size = {
+  audio: 0,
+  document: 0,
+  image: 0,
+  others: 0,
+  total: 0,
+  video: 0,
+};
 
 type responseType = {
   data: { sizes: sizesType };
@@ -29,20 +37,20 @@ export function Armazenamento() {
   const bucketName = localStorage.getItem("bucketName");
   const token = GetToken();
 
-  const [sizes, setSizes] = useState<sizesType>({});
+  const [sizes, setSizes] = useState<sizesType>(size);
   useEffect(() => {
-    Axios.get(`/sizes/${bucketName}`,{
-      headers:{
-        Authorization:token
-      }
-    }).then(
-      ({ data }: responseType) => {
+    Axios.get(`/sizes/${bucketName}`, {
+      headers: {
+        Authorization: token,
+      },
+    })
+      .then(({ data }: responseType) => {
         const itensKeys = Object.keys(data.sizes);
         setSizes(data.sizes);
-      }
-    ).catch((e)=>{
-      toast.error("Algo deu errado. Porfavor reinicie seu navegador ");
-    });
+      })
+      .catch((e) => {
+        toast.error("Algo deu errado. Porfavor reinicie seu navegador ");
+      });
   }, []);
 
   const data = {
@@ -80,7 +88,7 @@ export function Armazenamento() {
     plugins: {
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: (context: any) => {
             const value = convertBytes(context.parsed);
             return `${value}`;
           },
@@ -97,7 +105,6 @@ export function Armazenamento() {
             <Doughnut data={data} options={options} />
           </div>
         ) : (
-          
           <></>
         )}
       </PageContainer>

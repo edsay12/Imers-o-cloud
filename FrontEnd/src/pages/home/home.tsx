@@ -17,18 +17,17 @@ import GetToken from "../../utils/GetToken";
 export function Home() {
   const [itens, setItens] = useState<content[]>([]);
   const [isloading, setIsloading] = useState(false);
-  const { isCardReload, setIsCardReload } = useContext(CardPageReload);
+  const { isCardReload, setIsCardReload } = useContext<any>(CardPageReload);
   const bucketName = localStorage.getItem("bucketName");
-  
+
   useEffect(() => {
     setIsloading(true);
     const token = GetToken();
-   
-    Axios.get(`/${bucketName}`,{
-      headers:{
-        'Authorization':token
-      }
-     
+
+    Axios.get(`/${bucketName}`, {
+      headers: {
+        Authorization: token,
+      },
     })
       .then((data: AxiosResponse<apiGetItensContent, apiGetItensContent>) => {
         const S3Items = data.data.itens.Content;
@@ -36,7 +35,7 @@ export function Home() {
           return data.storageClass === "STANDARD";
         });
         setItens(Data);
-        
+
         setIsloading(false);
       })
       .catch((e) => {
@@ -55,10 +54,10 @@ export function Home() {
 
           {itens.length > 0 ? (
             <div className="cards">
-              {itens.map((data,index) => {
+              {itens.map((data, index) => {
                 return (
                   <ArchiveCard
-                  key={index}
+                    key={index}
                     itemKey={data.key}
                     ArchiveTypes={data.type}
                     cardTitle={data.itemName}
