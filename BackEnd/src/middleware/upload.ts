@@ -17,7 +17,6 @@ var upload = multer({
   fileFilter: (req, file, cb) => {
     return cb(null, true); // Se isso retornar true que ele coloca o item na pasta
   },
-  
 });
 
 export = upload;

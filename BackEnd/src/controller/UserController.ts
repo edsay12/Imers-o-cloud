@@ -15,7 +15,6 @@ class UserController {
     this.cognitoIdentity = new AWS.CognitoIdentityServiceProvider({
       region: "us-east-1",
     });
-    
   }
 
   async signUp(req: Request, res: Response) {
@@ -52,12 +51,10 @@ class UserController {
         if (err) {
           res.send(err);
         } else {
-          if (typeof data.statusCode != 'undefined') {
-           
+          if (typeof data.statusCode != "undefined") {
             res.status(data.statusCode).send(data);
-          }else{
+          } else {
             res.send(data.message).status(200);
-
           }
         }
       }
@@ -65,7 +62,6 @@ class UserController {
   }
 
   signIn(req: Request, res: Response) {
-    console.log(req.body)
     const { email, password } = req.body;
     //validation
     const result = validationResult(req);
@@ -91,12 +87,11 @@ class UserController {
         if (err) {
           res.send(err);
         } else {
-          if (typeof data.statusCode != 'undefined') {
-            console.log(data.statusCode)
+          if (typeof data.statusCode != "undefined") {
+            console.log(data.statusCode);
             res.status(data.statusCode).send(data);
-          }else{
+          } else {
             res.send(data.message).status(200);
-
           }
         }
       }
@@ -126,12 +121,10 @@ class UserController {
         if (err) {
           res.send(err);
         } else {
-          if (typeof data.statusCode != 'undefined') {
-            console.log(data.statusCode)
+          if (typeof data.statusCode != "undefined") {
             res.status(data.statusCode).send(data);
-          }else{
+          } else {
             res.send(data.message).status(200);
-
           }
         }
       }
@@ -159,12 +152,11 @@ class UserController {
         if (err) {
           res.send(err);
         } else {
-          if (typeof data.statusCode != 'undefined') {
-            console.log(data.statusCode)
+          if (typeof data.statusCode != "undefined") {
+            console.log(data.statusCode);
             res.status(data.statusCode).send(data);
-          }else{
+          } else {
             res.send(data.message).status(200);
-
           }
         }
       }
@@ -194,12 +186,11 @@ class UserController {
         if (err) {
           res.send(err);
         } else {
-          if (typeof data.statusCode != 'undefined') {
-            console.log(data.statusCode)
+          if (typeof data.statusCode != "undefined") {
+            console.log(data.statusCode);
             res.status(data.statusCode).send(data);
-          }else{
+          } else {
             res.send(data.message).status(200);
-
           }
         }
       }
