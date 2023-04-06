@@ -1,0 +1,12 @@
+FROM node:lts-alpine
+
+EXPOSE 8081
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+WORKDIR /home/node/app
+

@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+    app:
+        build: ./BackEnd
+        command: npm start
+        ports:
+            - "8081:8081"
+            
+    front:
+        build: ./FrontEnd
+        command: npm start
+        ports:
+            - "3000:3000"
+            
+    
