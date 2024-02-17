@@ -13,7 +13,7 @@
   
 </p>
 
-> Status do Projeto: :heavy_check_mark: :warning: Em Desenvolvimento
+> Status do Projeto: :heavy_check_mark: :warning: Finalizado
 
 ### Tópicos 
 
